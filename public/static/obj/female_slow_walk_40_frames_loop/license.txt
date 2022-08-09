@@ -1,0 +1,11 @@
+Model Information:
+* title:	Female Slow Walk (40 frames loop)
+* source:	https://sketchfab.com/3d-models/female-slow-walk-40-frames-loop-99da339f27dc4e10985f46b0262b7721
+* author:	Denys Almaral (https://sketchfab.com/denysalmaral)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Female Slow Walk (40 frames loop)" (https://sketchfab.com/3d-models/female-slow-walk-40-frames-loop-99da339f27dc4e10985f46b0262b7721) by Denys Almaral (https://sketchfab.com/denysalmaral) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,175 @@
+.main_page {
+  width: 100%;
+  height: 100%;
+  background: url(~@/assets/img/bg.png) no-repeat center center;
+  background-size: 100% 100%;
+  display: flex;
+  justify-content: center;
+  .login_box {
+    width: 500px;
+    height: 500px;
+    border-radius: 15px;
+    //   filter: blur(90%);
+    background-color: rgba(255, 255, 255, 0.445);
+    position: absolute;
+    right: 3%;
+    top: 16%;
+    z-index: 1;
+    .ipt_box {
+        width: 350px;
+        height: 50px;
+        margin: 40px auto;
+        border-radius: 5px;
+        background-color: #fff;
+        input {
+          width: 100%;
+          height: 100%;
+          border: none;
+          background-color: transparent;
+          outline: none;
+        }
+        input::-webkit-input-placeholder {
+          color: #aab2bd;
+          font-size: 17px;
+          padding-left: 10px;
+        }
+      }
+  }
+  .register_part {
+    width: 500px;
+    height: 500px;
+    border-radius: 15px;
+    filter: blur(90);
+    background-color: rgba(255, 255, 255, 0.445);
+    position: absolute;
+    right: 3%;
+    top: 16%;
+    opacity: 0;
+    .clear_btn {
+      width: 350px;
+      height: 50px;
+      margin: 0px auto;
+      position: relative;
+      bottom: 15px;
+      border-radius: 5px;
+      background-color: rgb(254, 89, 60);
+      color: white;
+      text-align: center;
+      line-height: 50px;
+      font-size: 23px;
+      cursor: pointer;
+    }
+    .ipt_box {
+        width: 350px;
+        height: 50px;
+        margin: 30px auto;
+        border-radius: 5px;
+        background-color: #fff;
+        input {
+          width: 100%;
+          height: 100%;
+          border: none;
+          background-color: transparent;
+          outline: none;
+        }
+        input::-webkit-input-placeholder {
+          color: #aab2bd;
+          font-size: 17px;
+          padding-left: 10px;
+        }
+      }
+  }
+  .line {
+    width: 350px;
+    margin: 0 auto;
+    border-bottom: 2px rgba(224, 105, 35, 0.787) solid;
+    padding-top: 30px;
+  }
+
+  .pas_box {
+    width: 350px;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: -10px;
+    border-radius: 5px;
+    background-color: #fff;
+    input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: transparent;
+      outline: none;
+    }
+    input::-webkit-input-placeholder {
+      color: #aab2bd;
+      font-size: 17px;
+      padding-left: 10px;
+    }
+  }
+  .ensure_box {
+    width: 350px;
+    height: 50px;
+    margin: 20px auto;
+    border-radius: 5px;
+    background-color: #fff;
+    input {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background-color: transparent;
+      outline: none;
+    }
+    input::-webkit-input-placeholder {
+      color: #aab2bd;
+      font-size: 17px;
+      padding-left: 10px;
+    }
+  }
+  .btn {
+    width: 350px;
+    height: 50px;
+    margin: 30px auto;
+    border-radius: 5px;
+    background-color: rgb(254, 174, 60);
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    font-size: 23px;
+    cursor: pointer;
+  }
+  .register_btn {
+    width: 350px;
+    height: 50px;
+    margin: 30px auto;
+    border-radius: 5px;
+    background-color: rgb(254, 60, 60);
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    font-size: 23px;
+    cursor: pointer;
+  }
+  .title_box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 35px;
+    position: relative;
+    top: 10px;
+    .title {
+      color: rgb(156, 154, 154);
+      font-size: 25px;
+    }
+    .register_box {
+      border: 1px solid orangered;
+      border-radius: 50%;
+      background-color: rgb(243, 138, 0);
+      color: white;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+      cursor: pointer;
+    }
+  }
+}

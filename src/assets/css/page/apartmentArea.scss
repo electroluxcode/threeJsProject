@@ -1,0 +1,80 @@
+  .label {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+  
+    span {
+      display: inline-block;
+      width: 100px;
+    }
+  }
+  
+  .user_box{
+
+  }
+  .user_box .username:hover{
+    color: #ffbbaa;
+  }
+  .user_box .username{
+        color: rgb(206, 206, 206);
+    padding: 20px 0 20px 20px;
+    font-size: 20px;
+    border-bottom: 1px solid rgb(114, 113, 113);
+    cursor: pointer;
+  }
+  .chartLayout {
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    bottom: 0;
+    display: block;
+    border-radius: 10px;
+  }
+  .videoImg {
+    background: url(../../public/static/images/close.png) no-repeat;
+    float: right;
+    width: 24px;
+    height: 24px;
+    margin: 10px 20px 10px 0;
+    cursor: pointer;
+  }
+  .container_box {
+    height: 100%;
+  }
+  #chart1 {
+    left: 175px;
+    bottom: 30px;
+  }
+  #chart2 {
+    right: 10px;
+    bottom: 30px;
+  }
+  .el-menu {
+    height: 100%;
+  }
+  .el-main {
+    padding: 0;
+    margin: 0;
+  }
+  .css2dLabel {
+    padding: 4px 10px;
+    color: #ffbbaa;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    border-radius: 5px;
+    font-size: 16px;
+    pointer-events: none;
+  }
+  .tag {
+    /* border:solid #009999 1px; */
+    background: linear-gradient(#00ffff, #00ffff) left top,
+      linear-gradient(#00ffff, #00ffff) left top,
+      linear-gradient(#00ffff, #00ffff) right bottom,
+      linear-gradient(#00ffff, #00ffff) right bottom;
+    background-repeat: no-repeat;
+    background-size: 1px 6px, 6px 1px;
+    background-color: rgba(255, 0, 0, 0.4);
+    color: #ffffff;
+    font-size:18px;
+    padding:8px 12px;     
+  }

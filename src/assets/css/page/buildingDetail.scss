@@ -1,0 +1,389 @@
+.BuildingDetail{
+    width: 100%;
+    height: auto;
+    color: #333;
+    overflow: hidden;
+    background-color: #2e2d3c;
+    background-size: 100% 100%;
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: PingFangSC-Light, 微软雅黑;
+      }
+      fieldset,
+      img,
+      input,
+      button {
+        border: none;
+        padding: 0;
+        margin: 0;
+        outline-style: none;
+      }
+      img {
+        border: 0;
+        vertical-align: middle;
+      }
+      ul,
+      li {
+        list-style: none;
+      }
+      a {
+        text-decoration: none;
+        cursor: pointer;
+      }
+}
+    #label {
+        position: absolute;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.6);
+        line-height: 1;
+        color:#000000;
+        border-radius: 5px;
+        display:none;
+    }
+
+    /*各浏览器显示不同，去掉蓝色边框*/
+
+
+    /*清除浮动*/
+    .clear-both:before, .clear-both:after {
+        display: table;
+        content: "";
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        clear: both;
+    }
+    .clearfix {
+        *zoom: 1; /*IE/7/6*/
+    }
+    .el-container {
+        display: block;
+      }
+    .fr{
+        float: right;
+    }
+    .header{
+        width: 100%;
+        height: 60px;
+        padding:0 20px;
+        min-width: 1366px;
+    }
+    .bg_header{
+        width: 100%;
+        height: 60px;
+        background: url('~@/assets/img/title.png') no-repeat;
+        background-size: 100% 100%;
+    }
+    .fl{
+        float: left;
+    
+    }
+    .t_title{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 2.0em;
+        line-height: 70px;
+        color: #fff;
+    }
+    .data_content{
+        /*overflow-x: hidden;*/
+        min-width: 1366px;
+        background-size: 100% 100%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        height: 100%;
+
+    }
+    .dataShow
+    {
+        width:100%;
+        min-height:608px;
+        height: calc(100%-50px);
+        height: 100%;
+    }
+    .data_content .data_main{
+        width: calc(100% - 40px);
+        margin-bottom: 40px;
+        height: 100%;
+        margin-left: 20px;
+        margin-top: 20px;
+    }
+    .data_content .data_main .main_center .center_text{
+        width: calc(100% - 10px);
+        height: 100%;
+        margin-left: 10px;
+        margin-right: 25px;
+        box-sizing: border-box;
+        border: 1px solid #2C58A6;
+        border-radius: 2px;
+        position: relative;
+    }
+    .data_content .data_main .main_left{
+        width: 76%;
+        height: 100%;
+    }
+    .data_content .data_main .main_center {
+        width: 24%;
+        height: 100%;
+    }
+    .data_content .data_main .main_left .center_text{
+        width: calc(100% - 50px);
+        height: 100%;
+        margin-left: 25px;
+        margin-right: 25px;
+        box-sizing: border-box;
+        border: 1px solid #2C58A6;
+        border-radius: 2px;
+        position: relative;
+    }
+    .data_content .data_main .main_left .main_title{
+        width: 180px;
+        height: 35px;
+        line-height: 33px;
+        background-color: #2C58A6;
+        border-radius: 2px;
+        position: absolute;
+        top: -17px;
+        left: 50%;
+        margin-left: -90px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        box-sizing: border-box;
+        z-index: 1000;
+        text-align: center;
+    }
+    .data_content .data_main .main_center .main_title{
+        width: 180px;
+        height: 35px;
+        line-height: 33px;
+        background-color: #2C58A6;
+        border-radius: 2px;
+        position: absolute;
+        top: -17px;
+        left: 50%;
+        margin-left: -90px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        box-sizing: border-box;
+        z-index:1000;
+        text-align: center;
+    }
+    .t_line_box {
+        /*position: absolute;*/
+        width: 100%;
+        height: 100%;
+    }
+    .t_line_box i{
+        background-color: #4788fb;
+        box-shadow: 0px 0px 10px #4788fb;
+        position: absolute;
+    }
+    .t_r_line{
+        height: 5px;
+        width: 26px;
+        right: -3px;
+        top: -3px;
+    }
+    .t_title {
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 2.5em;
+        line-height: 80px;
+        color: #fff;
+    }
+    .r_t_line{
+        width: 5px;
+        height: 24px;
+        right: -3px;
+        top: -3px;
+    }
+    .l_b_line{
+        width: 5px;
+        height: 24px;
+        left: -3px;
+        bottom: -3px;
+    }
+    .b_l_line{
+        height: 5px;
+        width: 26px;
+        left: -3px;
+        bottom: -3px;
+    }
+    
+    .r_b_line{
+        width: 5px;
+        height: 24px;
+        right: -3px;
+        bottom: -3px;
+    }
+    .b_r_line{
+        height: 5px;
+        width: 26px;
+        right: -3px;
+        bottom: -3px;
+    }
+    .l_t_line{
+        width: 5px;
+        height: 24px;
+        left: -3px;
+        top: -3px;
+    }
+    .t_l_line{
+        height: 5px;
+        width: 26px;
+        left: -3px;
+        top: -3px;
+    }
+    .header>.header_nav{
+        margin-left: 20px;
+    }
+    .header>.header_nav>ul>li{
+        float: left;
+        margin-right: 6px;
+        position: relative;
+    }
+    .header>.header_nav>ul>li>a{
+        display: block;
+        height: 80px;
+        padding:0 10px 0 30px;
+        line-height: 80px;
+        color:#fff;
+    }
+    .header>.header_nav>ul>li>a:hover{
+        border-bottom: 4px solid #4b8df8;
+    }
+    .header>.header_nav>ul>li>img{
+        float: left;
+        position: absolute;
+        top: 33px;
+        left:10px;
+    }
+    .header>.header_nav>ul>li>a.nav_current{
+        border-bottom: 4px solid #4b8df8;
+    }
+    
+    .header>.header_myself{
+        width: 90px;
+        text-align: center;
+    }
+    .header>.header_myself>p{
+        color:#fff;
+        font-size: 13px;
+        margin-top: 15px;
+    }
+    .header>.header_myself>a{
+        color:#fff;
+        font-size: 13px;
+    }
+    .t_height {
+        line-height: 80px;
+        position: absolute;
+        right: 28px;
+        top: 0;
+    }
+    .t_a {
+        display: inline-block;
+        padding: 10px 5px;
+        width: 80px;
+        border-style: solid;
+        border-width: 0;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: bold;
+        line-height: normal;
+        margin: 0 0 0.5em 0;
+        position: relative;
+        text-decoration: none;
+        text-align: center;
+        display: inline-block;
+        font-size: 1em;
+        background-color: #2C58A6;
+        border-color: #0263ff;
+        color: white;
+        box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.2) inset !important;
+        margin-right: 0.5em;
+        border-radius: 4px;
+    }
+    .t_a:hover{
+        background-color: #39db1d;
+        transition: 0.5s;
+    }
+    .binNum
+    {
+        margin-top: 20px;
+        height: 25%;
+        width: 100%
+    }
+    .totalBinNum
+    {
+        height: 100%;
+        width: 45%;
+        margin: 10px
+    }
+    .con_div_text01{
+        display: flex;
+        justify-content: center;
+    }
+    .con_div_text02{
+        display: flex;
+        justify-content: center;
+        position: relative;
+        left: 30px;
+    }
+    .text01_img{
+        width: 40px;
+        height: 40px;
+        margin-top: 30px;
+    }
+    .text01_div {
+        margin-top: 15px;
+        text-align: center;
+        color: darksalmon;
+    }
+    
+    .left
+    {
+        float: left;
+    }
+    .right
+    {
+        float: right;
+    }
+    .occurpyBinNum
+    {
+        height: 100%;
+        width: 45%;
+        margin: 10px
+    }
+    .inOroutNum
+    {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: absolute;
+        right: 60px;
+        text-align: center;
+    }
+    .org{
+        font-size: 30px;
+        font-family:"Digiface";
+        color: #ff4e4e !important;
+    }
+    .abnormalbin
+    {
+        height: 30%;
+        width: 100%
+    }
+    .colDistribution
+    {
+    
+        height: 30%;
+        width: 100%
+    }
+
+   
