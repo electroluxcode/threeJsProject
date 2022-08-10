@@ -385,7 +385,7 @@ export default {
         10,
         10000
       );
-      this.camera.position.set(1000, 1500, 2500);
+      this.camera.position.set(1000, 1000, 1500);
     },
     // 初始化灯光
     initLight() {

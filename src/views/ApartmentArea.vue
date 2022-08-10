@@ -103,9 +103,14 @@ import { clickPick } from "../../public/static/js/clickPick";
 // } from "../utils/modelList";
 import { initEchartOption1, initEchartOption2 } from "../utils/echarts";
 import { initRenderer, initControls } from "../utils/baseElement";
+
+//引入socket测试
+import io from 'socket.io-client'
+// const socket = io('http://localhost:3002');
 export default {
   data() {
     return {
+      personObj:[],
       menuList: [
         { text: "详情管理", icon: "el-icon-s-home" },
         { text: "汽车停放时间", icon: "el-icon-collection-tag" },
@@ -196,6 +201,12 @@ export default {
       param: {
         floor: 1,
       },
+      robot:[],
+      robotObj:[],
+      name:null,
+      hideCanvas:true,
+      hotZoneData: null,
+      socket:io('http://localhost:3002')
     };
   },
   mounted() {
@@ -240,8 +251,24 @@ export default {
     this.raychartlistMed();
     this.barchartlistMed();
     this.buildstatusMed();
-    this.init();
+    
+
+    //初始化socket 连接
     clearInterval(this.timer);
+    // let that = this
+    // window.addEventListener('DOMContentLoaded', function () {
+    //     that.socketIo()
+    // })
+    this.socketIo()
+
+    this.socket.on('message', (message) => {
+          console.log(message,"收到的message")
+          document.querySelector('.talk_show').innerHTML+='<div class="btalk"><span id="asay">'+message+'</span></div>'
+    })
+    
+    this.init();
+
+
   },
   beforeDestroy() {
     this.scene.clear();
@@ -257,8 +284,29 @@ export default {
     this.controls = null;
     this.outlinePass = null;
     this.css2dRender = null;
+    
   },
   methods: {
+    
+    initData(){
+        let that=this
+        this.$axios.get('http://localhost:3002/hotZone').then(function (response) {
+          console.log(response);
+          that.hotZoneData=response.data
+        }).catch(function (error) {
+          console.log(error);
+        });
+      },
+      socketIo(){
+        this.socket.on('connect',function(){
+          console.log('socket连接成功');
+          //客户端连接成功后发送消息'welcome'
+          // socket.send('welcome');
+        })
+      },
+    goToChat(){
+      this.$router.push({path:"chat"})
+    },
     goToDetail(){
       this.$router.push({path:"buildingdetail?name=dep1"})
     },
@@ -275,6 +323,7 @@ export default {
           break;
         case "3":
           this.addCamera();
+          // this.test()
           break;
         case "4":
           this.changeMode();
@@ -293,6 +342,9 @@ export default {
           break;
         case "9":
           this.goToDetail()
+          break;
+        case "10":
+          this.goToChat()
           break;
       }
     },
@@ -315,11 +367,16 @@ export default {
     // tourCity
     tourCity() {
       this.normalView = false;
+      console.log(this.scene,"this.scene")
       this.camera.position.y = 100;
       this.camera.lookAt(0, 100, 0);
-      this.lockcontrols.getObject().position.x = 0;
-      this.lockcontrols.getObject().position.y = 100;
-      this.lockcontrols.getObject().position.z = 580;
+      // this.lockcontrols.getObject().position.x = 0;
+      // this.lockcontrols.getObject().position.y = 100;
+      // this.lockcontrols.getObject().position.z = 580;
+      this.lockcontrols.getObject().position.x = this.robot[0].position.x-1280;
+      this.lockcontrols.getObject().position.y = this.robot[0].position.y;
+      this.lockcontrols.getObject().position.z = this.robot[0].position.z;
+      // this.scene.add(this.personObj)
       this.lockcontrols.lock();
     },
     // 初始化方法
@@ -348,6 +405,8 @@ export default {
     // 使用async方法加载模型
     async AsyncInitModel() {
       let obj = await this.initModelMed("city");
+      let obj1 = await this.initModelRobot("robot");
+      let obj2 = await this.initModelRobot2("robot");
       this.cloneBuilding(obj.clone());
       // 初始化行驶路线
       this.initCurve(obj);
@@ -380,7 +439,7 @@ export default {
         10,
         10000
       );
-      this.camera.position.set(1000, 1500, 2500);
+      this.camera.position.set(1000, 1000, 1500);
     },
     // 初始化灯光
     initLight() {
@@ -435,6 +494,99 @@ export default {
                   child.geometry.center(centroid.x, centroid.y, centroid.z);
                   child.position.set(centroid.x, centroid.y, centroid.z);
                 });
+                this.scene.add(obj);
+                resolve(obj);
+              } else {
+                reject("error");
+              }
+            });
+        });
+      });
+    },
+
+    // 初始化高达
+    initModelRobot(url) {
+      return new Promise((resolve, reject) => {
+        new MTLLoader().setPath("/static/obj/").load(`${url}.mtl`, (materials) => {
+          materials.preload();
+          new OBJLoader()
+            .setMaterials(materials)
+            .setPath("/static/obj/")
+            .load(`${url}.obj`, (obj) => {
+              if (obj) {
+                this.objList = obj;
+                this.loading = false;
+                obj.children.forEach((child) => {
+                  child.geometry.computeBoundingBox();
+                  const centroid = new THREE.Vector3();
+                  centroid.addVectors(
+                    child.geometry.boundingBox.min,
+                    child.geometry.boundingBox.max
+                  );
+                  //分离程度，越大分离越离谱  
+                  centroid.multiplyScalar(0.5);
+                  centroid.applyMatrix4(child.matrixWorld);
+                  child.geometry.center(centroid.x, centroid.y, centroid.z);
+                  child.position.set(centroid.x-6000, centroid.y+650, centroid.z+200 );
+                  
+                  
+                  console.log(child.name,"user的名字")
+                });
+                // const centroid = new THREE.Vector3();
+                
+             
+                obj.scale.set(0.1,0.1,0.1)
+                this.robotObj=obj.getObjectByName('FIN')
+                   console.log(this.robotObj,"this.robotObj")
+                // obj.position.set(new THREE.Vector3(0,10,0))
+                this.robot.push(obj)
+                
+                this.scene.add(obj);
+                resolve(obj);
+              } else {
+                reject("error");
+              }
+            });
+        });
+      });
+    },
+    // 初始化高达2
+    initModelRobot2(url) {
+      return new Promise((resolve, reject) => {
+        new MTLLoader().setPath("/static/obj/").load(`${url}.mtl`, (materials) => {
+          materials.preload();
+          new OBJLoader()
+            .setMaterials(materials)
+            .setPath("/static/obj/")
+            .load(`${url}.obj`, (obj) => {
+              if (obj) {
+                this.objList = obj;
+                this.loading = false;
+                obj.children.forEach((child) => {
+                  child.geometry.computeBoundingBox();
+                  const centroid = new THREE.Vector3();
+                  centroid.addVectors(
+                    child.geometry.boundingBox.min,
+                    child.geometry.boundingBox.max
+                  );
+                  //分离程度，越大分离越离谱  
+                  centroid.multiplyScalar(0.5);
+                  centroid.applyMatrix4(child.matrixWorld);
+                  child.geometry.center(centroid.x, centroid.y, centroid.z);
+                  child.position.set(centroid.x+4000, centroid.y+650, centroid.z+200 );
+                  child.name="FIN2"
+                  
+                  console.log(child.name,"user的名字")
+                });
+                // const centroid = new THREE.Vector3();
+                
+             
+                obj.scale.set(0.1,0.1,0.1)
+                // this.robotObj=obj.getObjectByName('FIN')
+                //    console.log(this.robotObj,"this.robotObj")
+                // obj.position.set(new THREE.Vector3(0,10,0))
+                this.robot.push(obj)
+                
                 this.scene.add(obj);
                 resolve(obj);
               } else {
@@ -502,9 +654,14 @@ export default {
           personObj.scale.set(50, 50, 50);
           personObj.position.set(700, 10, 0);
           const group = new THREE.Group();
+          
+          
+          this.personObj=personObj
+         
           group.add(personObj);
+     
           group.name = "people";
-          this.scene.add(group);
+          this.scene.add(group,group.clone().translateX(30),group.clone().translateY(30));
           group.traverse(function (child) {
             if (child.type === "Mesh") {
               child.material.emissive = child.material.color;
@@ -515,8 +672,41 @@ export default {
           this.mixer = new THREE.AnimationMixer(group);
           this.AnimationAction = this.mixer.clipAction(gltf.animations[0]);
           this.AnimationAction.timeScale = 0.8;
+          console.log(this.scene.getObjectByName("people"))
           // this.AnimationAction.play();
         });
+
+         
+        // new GLTFLoader()
+        // .setPath("/static/obj/female_slow_walk_40_frames_loop/")
+        // .load("scene.gltf", (gltf) => {
+        //   const personObj = gltf.scene;
+        //   personObj.scale.set(50, 50, 50);
+        //   personObj.position.set(750, 10, 10);
+        //   const group = new THREE.Group();
+          
+        //   //自己加的
+        //   this.personObj=personObj
+        //   const personObj1 = gltf.scene;
+       
+          
+
+        //   group.add(personObj);
+        //   group.add(personObj1);
+        //   group.name = "people2";
+        //   this.scene.add(group);
+        //   group.traverse(function (child) {
+        //     if (child.type === "Mesh") {
+        //       child.material.emissive = child.material.color;
+        //       child.material.emissiveMap = child.material.map;
+        //     }
+        //   });
+        //   this.person = group;
+        //   this.mixer = new THREE.AnimationMixer(group);
+        //   this.AnimationAction = this.mixer.clipAction(gltf.animations[0]);
+        //   this.AnimationAction.timeScale = 0.8;
+        //   // this.AnimationAction.play();
+        // });
     },
     // 初始化stats
     initStats() {
@@ -747,6 +937,7 @@ export default {
       }
     },
     test() {
+      this.followPerson=1
       // const {x,y,z} = this.person.position
       if (this.followPerson) {
         this.camera.position.set(
@@ -834,6 +1025,15 @@ export default {
     },
     // 第一人称移动 需要在render()里面实时更新位置
     firstPersonMove() {
+    
+      // console.log(this.robotObj)
+
+      
+      this.robotObj.position.x=this.lockcontrols.getObject().position.x*10+300
+      this.robotObj.position.y=this.lockcontrols.getObject().position.y*10-700
+      this.robotObj.position.z=this.lockcontrols.getObject().position.z*10
+      // this.person.position=this.lockcontrols.getObject().position
+      // console.log(this.robotObj.position)
       // if (this.lockcontrols.isLocked) {
       // 每次都获取上一次的间隔时间 因为根据性能不同每次调用循环函数的时间都是不一样的
       const time = performance.now();
@@ -857,6 +1057,8 @@ export default {
       this.lockcontrols.getObject().translateX(this.velocity.x * delta);
       this.lockcontrols.getObject().position.y += this.velocity.y * delta; // new behavior
       this.lockcontrols.getObject().translateZ(this.velocity.z * delta);
+
+      // this.robotObj.lookAt(this.velocity)
       // 保证高于地面的距离
       if (this.lockcontrols.getObject().position.y < 100) {
         this.velocity.y = 0;
@@ -874,7 +1076,11 @@ export default {
       this.texture.offset.x = Math.floor(this.t) / num; // 动态更新纹理偏移 播放关键帧动画 产生火焰然后效果
     },
     render() {
+      
+
+
       this.animationID = requestAnimationFrame(this.render);
+      
       this.renderer.render(this.scene, this.camera);
       if (this.lockcontrols.isLocked) {
         this.firstPersonMove();
@@ -889,7 +1095,7 @@ export default {
       // 汽车移动方法
       this.truckMove(this.curve2, this.car);
       // this.truckMove(this.curve, this.truck);
-      this.test();
+      // this.test();
       // 扫描效果
       if (this.isShowScan) {
         this.mesh2.rotateZ(0.03);
@@ -923,34 +1129,47 @@ export default {
         this.isShowFire = false;
       } else {
         const depObj = this.scene.children[this.groupIndex].children.filter((item) =>
-          item.name.includes("dep")
+          item.name.includes("trafficLight")
+          // console.log(item.name)
         );
         depObj.forEach((ele) => {
-          this.buildingStatus.forEach((res) => {
-            if (res.name == ele.name && res.type == 1) {
-              const label = this.tag(`${ele.name}失火了！！！`);
-              label.position.y = ele.position.y * 3;
-              const fire = this.createFlame(
-                8,
-                ele.position.x,
-                ele.position.y,
-                ele.position.z
-              );
-              this.isShowFire = true;
-              this.fireArray.push(label, fire);
-              ele.add(label, fire);
-            } else if (res.name == ele.name && res.type == 2) {
-              const label = this.tag(`${ele.name}有紧急需求！！！`);
-              label.position.y = ele.position.y * 3;
-              this.fireArray.push(label);
-              ele.add(label);
-            } else if (res.name == ele.name && res.type == 3) {
-              const label = this.tag(`${ele.name}有危险发生！！！`);
-              label.position.y = ele.position.y * 2;
-              this.fireArray.push(label);
-              ele.add(label);
-            }
-          });
+          //这里测试
+          const label = this.tag(`${ele.name}有紧急需求！！！`);
+          label.position.y = ele.position.y * 3;
+          this.fireArray.push(label);
+          ele.add(label);
+
+          // this.buildingStatus.forEach((res) => {
+          //     //这里测试
+          //     const label = this.tag(`${ele.name}有紧急需求！！！`);
+          //     label.position.y = ele.position.y * 3;
+          //     this.fireArray.push(label);
+          //     ele.add(label);
+
+          //   if (res.name == ele.name && res.type == 1) {
+          //     const label = this.tag(`${ele.name}失火了！！！`);
+          //     label.position.y = ele.position.y * 3;
+          //     const fire = this.createFlame(
+          //       8,
+          //       ele.position.x,
+          //       ele.position.y,
+          //       ele.position.z
+          //     );
+          //     this.isShowFire = true;
+          //     this.fireArray.push(label, fire);
+          //     ele.add(label, fire);
+          //   } else if (res.name == ele.name && res.type == 2) {
+          //     const label = this.tag(`${ele.name}有紧急需求！！！`);
+          //     label.position.y = ele.position.y * 3;
+          //     this.fireArray.push(label);
+          //     ele.add(label);
+          //   } else if (res.name == ele.name && res.type == 3) {
+          //     const label = this.tag(`${ele.name}有危险发生！！！`);
+          //     label.position.y = ele.position.y * 2;
+          //     this.fireArray.push(label);
+          //     ele.add(label);
+          //   }
+          // });
         });
         const scanEffect = this.createScanEffect();
         this.isShowScan = true;

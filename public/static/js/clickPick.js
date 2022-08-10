@@ -82,6 +82,7 @@ export const clickPick = (_this) => {
     const intersects = rayCaster.intersectObjects([_this.scene], true);
     if (intersects.length > 0) {
       const object_name = intersects[0].object.name;
+ 
       // 是否显示卡片
       if (
         intersects.length === 0 ||
@@ -92,6 +93,7 @@ export const clickPick = (_this) => {
         return;
       }
       switch (object_name.substring(0, 3)) {
+        
         // truck
         case "tru":
           _this.trucklist.forEach((e) => {
@@ -268,6 +270,8 @@ export const clickPick = (_this) => {
         selectedObjects.pop();
         selectedObjects.push(intersects[0].object);
       }
+
+      //安全门
       if (object_name.includes("door")) {
         console.log(object_name)
         const parentDiv = document.createElement("div");
@@ -321,6 +325,179 @@ export const clickPick = (_this) => {
         selectedObjects.pop();
         selectedObjects.push(intersects[0].object);
       }
+
+      //高达对话框
+      //安全门
+      if (object_name.includes("FIN")) {
+        console.log(object_name)
+        const parentDiv = document.createElement("div");
+        parentDiv.className = "parentVideo";
+        parentDiv.style.position = "absolute";
+        parentDiv.style.display = "none";
+        parentDiv.style.backgroundColor = "rgba(25, 25, 25, 0.5)";
+        const titleDiv = document.createElement("div");
+        titleDiv.style.cssText =
+          "height: 24px;inline-height: 24px;float: left;color: #FFFFFF;font-size:20px;margin:10px 0 10px 20px";
+        titleDiv.textContent = "与"+object_name+"的对话";
+        const closeDiv = document.createElement("div");
+        closeDiv.className = "videoImg";
+        closeDiv.addEventListener("click", () => {
+          const videoDiv = document.querySelectorAll(".parentVideo");
+          for (const e of videoDiv) {
+            e.remove();
+          }
+        });
+        parentDiv.appendChild(titleDiv);
+        parentDiv.appendChild(closeDiv);
+        const videoLabel = document.createElement("div");
+        videoLabel.innerHTML = `
+        <style type="text/css">
+        
+		@media screen and (min-width: 320px) and (max-width: 1156px){
+			.talk_con_mob{
+				width:600px;
+				height:500px;
+				border:1px solid #666;
+				margin:50px auto 0;
+				background:#f9f9f9;
+			}
+			.talk_show_mob{
+				width:580px;
+				height:420px;
+				border:1px solid #666;
+				background:#fff;
+				margin:10px auto 0;
+				overflow:auto;
+			}
+			.talk_input_mob{
+				width:580px;
+				margin:10px auto 0;
+			}
+			.talk_word_mob{
+				width:420px;
+				height:26px;
+				padding:0px;
+				float:left;
+				margin-left:10px;
+				outline:none;
+				text-indent:10px;
+			}  
+		}
+			.talk_con{
+				width:600px;
+				height:500px;
+				border:1px solid #666;
+				margin:50px auto 0;
+				background:#f9f9f9;
+			}
+			.talk_show{
+				width:580px;
+				height:420px;
+				border:1px solid #666;
+				background:#fff;
+				margin:10px auto 0;
+				overflow:auto;
+			}
+			.talk_input{
+				width:580px;
+				margin:10px auto 0;
+			}
+			.whotalk{
+				width:80px;
+				height:30px;
+				float:left;
+				outline:none;
+			}
+			.talk_word{
+				width:420px;
+				height:26px;
+				padding:0px;
+				float:left;
+				margin-left:10px;
+				outline:none;
+				text-indent:10px;
+			}         
+			.talk_sub{
+				width:56px;
+				height:30px;
+				float:right;
+				margin-right:10px;
+			}
+			.atalk{
+			   margin:10px; 
+			}
+			.atalk span{
+				display:inline-block;
+				background:#0181cc;
+				border-radius:10px;
+				color:#fff;
+				padding:5px 10px;
+			}
+			.btalk{
+				margin:10px;
+				text-align:right;
+			}
+			.btalk span{
+				display:inline-block;
+				background:#ef8201;
+				border-radius:10px;
+				color:#fff;
+				padding:5px 10px;
+			} 
+    </style>
+        <div class="talk_con" id="talk_con_id">
+        <div class="talk_show" id="words">
+            <div class="atalk"><span id="asay">欢迎进入模拟客户聊天</span></div>
+           
+        </div>
+        <div class="talk_input"  id="talk_input_id">>
+            <input type="text" class="talk_word" id="talkwords" >
+            <input type="button" value="发送" class="talk_sub" id="talksub" >
+        </div>
+    </div>`;
+        // videoLabel.autoplay = true;
+        // videoLabel.muted = true;
+        // videoLabel.controls = true;
+        // videoLabel.loop = true;
+        // videoLabel.style.width = "100%";
+        // videoLabel.style.height = "350px";
+        // const videoSource = document.createElement("source");
+        // videoSource.src = "static/video/watch.mp4";
+        // videoSource.type = "video/mp4";
+        // videoLabel.appendChild(videoSource);
+        parentDiv.appendChild(videoLabel);
+        document.body.appendChild(parentDiv);
+        // document.querySelector('.openDoor').addEventListener('click',()=>{
+        //   alert('你点击了开门')
+        // })
+        //添加enter事件
+        // var that= this
+        
+        
+        
+        
+        document.onkeydown = function (e) {
+          var ev = document.all ? window.event : e;
+          if (ev.keyCode == 13) {
+              console.log(document.querySelector('.talk_word').value)
+              document.querySelector('.talk_show').innerHTML+='<div class="atalk"><span id="asay">'+document.querySelector('.talk_word').value+'</span></div>'
+              
+              _this.socket.emit('message', ( document.querySelector('.talk_word').value));
+              document.querySelector('.talk_word').value=''
+              // <div class="atalk"><span id="asay">欢迎进入模拟客户聊天</span></div>
+          }
+        }
+
+
+        showCard(parentDiv, x, y);
+      } else {
+        selectedObjects.pop();
+        selectedObjects.push(intersects[0].object);
+      }
+
+
+
+
 
       _this.effectController.A = object_name;
     }

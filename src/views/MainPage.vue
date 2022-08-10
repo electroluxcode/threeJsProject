@@ -104,7 +104,6 @@
 </template>
 
 <script>
-
 import VueImage from "@/components/verify/vueImageVerify.vue";
 export default {
   name: "MainPage",
@@ -141,7 +140,7 @@ export default {
             type: "success",
             message: "登录成功!",
           });
-          this.$router.push({path:"backstageManage/buildlist"})
+          this.$router.push({ path: "backstageManage/buildlist" });
         })
         .catch(() => {
           this.$message({
@@ -149,7 +148,6 @@ export default {
             message: "登录失败",
           });
         });
-        
     },
     toCity() {
       this.userInfoMed();
@@ -165,10 +163,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "/static/assets/css/login.css";
-  
-
-// @import "@/assets/css/page/mainPage.scss";
 .edu-container-new {
   background-color: #b0c4de;
 }
@@ -221,80 +215,76 @@ export default {
   width: 30px;
 }
 
-
-
 //login的样式
-@import url('http://at.alicdn.com/t/font_1437979_ce58zkmm23q.css');
+@import url("http://at.alicdn.com/t/font_1437979_ce58zkmm23q.css");
 * {
-	margin: 0;
-	padding: 0;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 body {
-	font-family: Arial, Helvetica, Sans-serif, Verdana, Tahoma;
+  font-family: Arial, Helvetica, Sans-serif, Verdana, Tahoma;
 }
-.lf{
+.lf {
   float: left;
 }
-.rt{
+.rt {
   float: right;
 }
-.edu-container{
+.edu-container {
   position: relative;
   width: 100%;
   height: 100vh;
-
 }
-.edu-container-new{
+.edu-container-new {
   position: relative;
   width: 100%;
   height: 100vh;
- 
 }
 
 /*  ���ϿƼ���ѧ�����ϿƼ���ѧ����ѧԺ����ͼƬ�滻  */
-.edu-container-new_hnkjdx{
+.edu-container-new_hnkjdx {
   position: relative;
   width: 100%;
   height: 100vh;
-  
+
   background-size: 100% 100%;
 }
 
-.edu-container-new_hnkjdxxxxy{
+.edu-container-new_hnkjdxxxxy {
   position: relative;
   width: 100%;
   height: 100vh;
-  
+
   background-size: 100% 100%;
 }
 
-.edu-content{
+.edu-content {
   position: relative;
   top: 50%;
   left: 50%;
   width: 1163px;
   height: 665px;
-  background: rgba(255,255,255,1);
-  box-shadow: 0px 20px 40px 0px rgba(0,0,0,0.38);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 20px 40px 0px rgba(0, 0, 0, 0.38);
   border-radius: 5px;
   transform: translate(-50%, -50%);
   padding: 69px 75px 102px 77px;
 }
-.edu-content-new{
+.edu-content-new {
   position: relative;
   top: 100px;
   left: 50%;
   width: 832px;
   height: 507px;
-  background: rgba(255,255,255,1);
-  box-shadow:0px 2px 30px 0px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin-left: -416px;
 }
-.copyright{
+.copyright {
   bottom: 75px;
   position: absolute;
   text-align: center;
@@ -302,111 +292,116 @@ body {
   color: #272727;
   font-size: 14px;
 }
-.edu-logo{
+.edu-logo {
   width: 182px;
   height: 54px;
   margin-bottom: 16px;
- 
 }
-.edu-map{
-  width:358px;
-  height:320px;
-  
+.edu-map {
+  width: 358px;
+  height: 320px;
 }
-.edu-map-new{
-  width:415px;
-  height:417px;
+.edu-map-new {
+  width: 415px;
+  height: 417px;
   border-radius: 8px 0 0 8px;
   position: relative;
-  background: linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(0,29,255,0.19) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(0, 29, 255, 0.19) 100%
+  );
 }
 
-.edu-map-new .layui-carousel,.edu-map-new .layui-carousel>div{
+.edu-map-new .layui-carousel,
+.edu-map-new .layui-carousel > div {
   border-radius: 8px 0 0 8px;
 }
 
-.login-form{
+.login-form {
   width: 320px;
 }
-.login-form-new{
+.login-form-new {
   width: 416px;
   height: 100%;
   padding: 24px 48px;
   box-sizing: border-box;
   position: relative;
 }
-.login-form>h2{
-  height:45px;
-  font-size:32px;
-  font-weight:500;
-  color:rgba(39,39,39,1);
-  line-height:45px;
+.login-form > h2 {
+  height: 45px;
+  font-size: 32px;
+  font-weight: 500;
+  color: rgba(39, 39, 39, 1);
+  line-height: 45px;
   margin-bottom: 12px;
 }
-.login-form-new>h2{
+.login-form-new > h2 {
   line-height: 36px;
   font-size: 24px;
   color: #272727;
   margin-bottom: 24px;
   font-weight: 600;
 }
-.login-form>p{
-  height:24px;
-  font-size:17px;
-  font-weight:500;
-  color:rgba(93,74,106,1);
-  line-height:24px;
+.login-form > p {
+  height: 24px;
+  font-size: 17px;
+  font-weight: 500;
+  color: rgba(93, 74, 106, 1);
+  line-height: 24px;
   margin-bottom: 47px;
 }
-.form-item{
+.form-item {
   margin-bottom: 32px;
 }
-.form-item>span{
-  height:18px;
+.form-item > span {
+  height: 18px;
   display: block;
-  font-size:14px;
-  color:rgba(136,136,136,1);
-  line-height:18px;
+  font-size: 14px;
+  color: rgba(136, 136, 136, 1);
+  line-height: 18px;
   margin-bottom: 10px;
 }
-.form-item>input[type="text"],.form-item>input[type="password"]{
-  width:320px;
-  height:48px;
-  background:rgba(239,240,244,1);
-  border-radius:5px;
-  color: #4F5362;
+.form-item > input[type="text"],
+.form-item > input[type="password"] {
+  width: 320px;
+  height: 48px;
+  background: rgba(239, 240, 244, 1);
+  border-radius: 5px;
+  color: #4f5362;
   font-size: 14px;
   outline: none;
   padding: 0 18px;
-  border: 1px solid rgba(239,240,244,1);
+  border: 1px solid rgba(239, 240, 244, 1);
 }
-.form-item>input[type="text"]:focus,
-.form-item>input[type="password"]:focus{
-  background:rgba(255,255,255,1);
-  box-shadow:0px 9px 18px 0px rgba(168,172,185,0.62);
+.form-item > input[type="text"]:focus,
+.form-item > input[type="password"]:focus {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 9px 18px 0px rgba(168, 172, 185, 0.62);
   border-color: #fff;
 }
 
-
-input[type=checkbox]{-webkit-appearance: none;-moz-appearance: none;
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
   appearance: none;
   position: relative;
-  border:1px solid #3B82FF;
+  border: 1px solid #3b82ff;
   border-radius: 50%;
-  width:22px;
-  height:22px;
+  width: 22px;
+  height: 22px;
   background: transparent;
   outline: none;
   cursor: pointer;
   vertical-align: sub;
 }
-input[type=checkbox]:after{
-  content: '\2713';
+input[type="checkbox"]:after {
+  content: "\2713";
   position: absolute;
   display: block;
   width: 100%;
   height: 100%;
-  background:rgba(0,168,248,1);
+  background: rgba(0, 168, 248, 1);
   color: #fff;
   text-align: center;
   line-height: 20px;
@@ -415,26 +410,26 @@ input[type=checkbox]:after{
   transition: all ease-in-out 300ms;
   opacity: 0;
 }
-input[type=checkbox]:checked:after{
+input[type="checkbox"]:checked:after {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
   opacity: 1;
 }
-#rememberPassword{
+#rememberPassword {
   margin-right: 10px;
 }
-.password-text{
-  height:18px;
-  font-size:14px;
-  color:rgba(117,117,117,1);
-  line-height:18px;
+.password-text {
+  height: 18px;
+  font-size: 14px;
+  color: rgba(117, 117, 117, 1);
+  line-height: 18px;
   position: relative;
   top: -2px;
   cursor: default;
 }
-p.login-cr{
-  color: #C8C8C8;
+p.login-cr {
+  color: #c8c8c8;
   font-size: 14px;
   position: absolute;
   width: 100%;
@@ -442,86 +437,88 @@ p.login-cr{
   text-align: center;
   bottom: 24px;
 }
-.btn-login{
+.btn-login {
   display: inline-block;
-  width:320px;
-  height:50px;
+  width: 320px;
+  height: 50px;
   margin-top: 22px;
-  background:linear-gradient(96deg,rgba(0,167,247,1) 0%,rgba(59,130,255,1) 100%);
-  border-radius:4px;
+  background: linear-gradient(96deg, rgba(0, 167, 247, 1) 0%, rgba(59, 130, 255, 1) 100%);
+  border-radius: 4px;
   color: #fff;
   font-size: 16px;
   text-align: center;
   line-height: 50px;
   cursor: pointer;
 }
-.btn-login-new{
+.btn-login-new {
   display: inline-block;
-  width:320px;
-  height:44px;
+  width: 320px;
+  height: 44px;
   margin-top: 22px;
-  background:#3B82FF;
-  border-radius:2px;
+  background: #3b82ff;
+  border-radius: 2px;
   color: #fff;
   font-size: 16px;
   text-align: center;
   line-height: 44px;
   cursor: pointer;
 }
-.edu-language{
+.edu-language {
   position: absolute;
-  width:100px;
-  height:48px;
-  background:#E0EEF7;
-  border-radius:0px 5px 0px 5px;
+  width: 100px;
+  height: 48px;
+  background: #e0eef7;
+  border-radius: 0px 5px 0px 5px;
   top: 0;
   right: 0;
-  color: #00ABF9;
+  color: #00abf9;
   font-size: 14px;
   line-height: 48px;
   text-align: center;
 }
-.edu-language>i{
+.edu-language > i {
   font-size: 10px;
   margin-left: 13px;
 }
-.edu-map-new .layui-carousel-ind ul{
+.edu-map-new .layui-carousel-ind ul {
   background-color: transparent;
 }
-.edu-map-new .layui-carousel-ind li{
+.edu-map-new .layui-carousel-ind li {
   width: 16px;
   height: 6px;
   border-radius: 4px;
 }
-.form-item-new{
+.form-item-new {
   position: relative;
 }
-.form-item-new>span{
+.form-item-new > span {
   display: block;
   color: #272727;
-  font-size:14px;
+  font-size: 14px;
   line-height: 14px;
   margin-bottom: 6px;
   font-weight: 600;
-  font-family:Source Han Sans CN Medium;
+  font-family: Source Han Sans CN Medium;
 }
-.form-item-new>input[type="text"],.form-item-new>input[type="password"]{
-  width:320px;
-  height:40px;
-  border-radius:2px;
-  border:1px solid rgba(229,229,229,1);
+.form-item-new > input[type="text"],
+.form-item-new > input[type="password"] {
+  width: 320px;
+  height: 40px;
+  border-radius: 2px;
+  border: 1px solid rgba(229, 229, 229, 1);
   padding: 0 10px;
   outline: none;
   margin-bottom: 12px;
 }
-.form-item-new>input[type="text"]:focus,.form-item-new>input[type="password"]:focus{
-  border-color: #3B82FF;
+.form-item-new > input[type="text"]:focus,
+.form-item-new > input[type="password"]:focus {
+  border-color: #3b82ff;
 }
-.form-item-new>input::placeholder{
+.form-item-new > input::placeholder {
   color: #c8c8c8;
 }
 
-.logo-area{
+.logo-area {
   position: absolute;
   top: 30px;
   left: 22%;
@@ -530,60 +527,60 @@ p.login-cr{
   margin-left: -50px;
 }
 
-.form-item-new>select{
-  width:320px;
-  height:40px;
-  border-radius:2px;
-  border:1px solid rgba(229,229,229,1);
-  font-family:SourceHanSansCN-Regular,SourceHanSansCN;
+.form-item-new > select {
+  width: 320px;
+  height: 40px;
+  border-radius: 2px;
+  border: 1px solid rgba(229, 229, 229, 1);
+  font-family: SourceHanSansCN-Regular, SourceHanSansCN;
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
-  padding:0 10px;
+  padding: 0 10px;
   font-weight: 400;
- 
+
   background-size: 12px 12px;
   margin-bottom: 12px;
 }
-.form-item-new>select:focus{
-  border-color: #3B82FF;
+.form-item-new > select:focus {
+  border-color: #3b82ff;
 }
-.form-item-new input[type=checkbox]{
-  width:15px;
-  height:15px;
+.form-item-new input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
 }
 
-.form-item-new .password-text{
+.form-item-new .password-text {
   top: 2px;
   color: #272727;
 }
-.form-item-new .password-text.rt{
-  color: #3B82FF;
+.form-item-new .password-text.rt {
+  color: #3b82ff;
 }
-.edu-map-new>.layui-carousel>div[carousel-item]{
-  background:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(0,29,255,0.19) 100%);
+.edu-map-new > .layui-carousel > div[carousel-item] {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(0, 29, 255, 0.19) 100%
+  );
 }
 
-.logo-area-new{
+.logo-area-new {
   position: absolute;
   z-index: 99;
   color: #595757;
   font-weight: 500;
 }
-.logo-area-new{
+.logo-area-new {
   padding: 30px 40px;
   width: 100%;
 }
 
-.logo-area-new>p{
+.logo-area-new > p {
   display: inline-block;
   vertical-align: middle;
   margin-left: 8px;
-  font-family: SourceHanSansCN-Medium,SourceHanSansCN;
+  font-family: SourceHanSansCN-Medium, SourceHanSansCN;
   font-weight: 600;
 }
-
-
-
-
 </style>

@@ -62,5 +62,10 @@ const routes = [
     name: "buildingdetail",
     component: () => import("../views/BuildingDetail.vue"),
   },
+  {
+    path: "chat",
+    name: "chat",
+    component: () => import("../views/PersonChatAll.vue"),
+  }
 ];
 export default routes;
