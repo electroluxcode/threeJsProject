@@ -2,6 +2,18 @@
 
 新加上了agv建模，和模拟取车的场景
 
+<img src="./readme/agv.png" />
+
+<img src="./readme/agv1.png" />
+
+<img src="./readme/agv2.png" />
+
+
+一些后端示例，像是聊天功能，table功能我放在behind文件夹下面
+
+
+
+
 ## 功能1：最简单的登录注册，表格方面增删改查
 
 
