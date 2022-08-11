@@ -146,7 +146,9 @@ export default {
       timer: null,
       curve: null,
       curve2: null,
+      curve3: null,
       truck: null,
+      agv:null,
       car: null,
       followTruck: false,
       followPerson: false,
@@ -405,12 +407,20 @@ export default {
     // 使用async方法加载模型
     async AsyncInitModel() {
       let obj = await this.initModelMed("city");
+
+      //加载高达模型
       let obj1 = await this.initModelRobot("robot");
       let obj2 = await this.initModelRobot2("robot");
+
+      //加载agv模型
+      let obj3 = await this.initModelAgv("agv");
+
       this.cloneBuilding(obj.clone());
       // 初始化行驶路线
       this.initCurve(obj);
+      this.initAgvCurve(obj3)
       this.initTruckCurve(obj);
+
       this.initGui(this.status);
       this.initOtherModel();
       this.render();
@@ -494,6 +504,55 @@ export default {
                   child.geometry.center(centroid.x, centroid.y, centroid.z);
                   child.position.set(centroid.x, centroid.y, centroid.z);
                 });
+                this.scene.add(obj);
+                resolve(obj);
+              } else {
+                reject("error");
+              }
+            });
+        });
+      });
+    },
+
+    // 初始化Agv
+    initModelAgv(url) {
+      return new Promise((resolve, reject) => {
+        new MTLLoader().setPath("/static/obj/").load(`${url}.mtl`, (materials) => {
+          materials.preload();
+          new OBJLoader()
+            .setMaterials(materials)
+            .setPath("/static/obj/")
+            .load(`${url}.obj`, (obj) => {
+              if (obj) {
+                this.objList = obj;
+                this.loading = false;
+                obj.children.forEach((child) => {
+                  child.geometry.computeBoundingBox();
+                  const centroid = new THREE.Vector3();
+                  centroid.addVectors(
+                    child.geometry.boundingBox.min,
+                    child.geometry.boundingBox.max
+                  );
+                  //分离程度，越大分离越离谱  
+                  centroid.multiplyScalar(0.5);
+                  centroid.applyMatrix4(child.matrixWorld);
+                  child.geometry.center(centroid.x, centroid.y, centroid.z);
+                  child.position.set(centroid.x, centroid.y-300, centroid.z );
+                  console.log(child.position,"agv")
+                  
+                  console.log(child.name,"user的名字")
+                });
+                // const centroid = new THREE.Vector3();
+                
+                
+                obj.scale.set(1,0.1,1)
+                // obj.position.set(new THREE.Vector3(200,50,1400))
+                // obj.position.x=-30
+                // obj.position.y=0
+                // obj.position.z=420
+                //  console.log(obj.position,"obj")
+                // this.agv=obj.getObjectByName('agv')
+                this.agv=obj
                 this.scene.add(obj);
                 resolve(obj);
               } else {
@@ -900,8 +959,78 @@ export default {
       });
       const curveMesh2 = new THREE.Line(geometry, lineMaterial);
       this.scene.add(curveMesh2);
+
       this.car = obj.getObjectByName("car4");
+      console.log(this.car.position,"this.car")
     },
+
+    // 初始化AGV的移动路线
+    initAgvCurve(obj) {
+      this.curve3 = new THREE.CatmullRomCurve3(
+        [
+          new THREE.Vector3(-400, 20, 300),
+          new THREE.Vector3(-400, 20, 250),
+          // new THREE.Vector3(-400, 20, -1300),
+          new THREE.Vector3(-400, 20, 0),
+          new THREE.Vector3(-150, 20, 0),
+          new THREE.Vector3(-150, 20, 0),
+          new THREE.Vector3(-150, 20, 0),
+          new THREE.Vector3(-150, 20, 0),
+          new THREE.Vector3(-150, 20, 0),
+          new THREE.Vector3(-150, 20, 0),
+          new THREE.Vector3(-150, 20, 0),
+          // new THREE.Vector3(-400, 20, 300),
+          // new THREE.Vector3(-400, 20, 250),
+        ],
+        false
+      );
+      const vertices = this.curve3.getPoints(100);
+      const geometry = new THREE.BufferGeometry().setFromPoints(vertices);
+      const lineMaterial = new THREE.LineBasicMaterial({
+        transparent: this,
+        opacity: 1,
+      });
+      const curveMesh3 = new THREE.Line(geometry, lineMaterial);
+      this.scene.add(curveMesh3);
+      // this.agv = obj.getObjectByName("agv");
+    },
+
+    // AGV运动
+    agvMove(curve, truck) {
+      // console.log(this.car.position)
+      if (this.progress > 0.36) {
+        return;
+      }
+      this.progress += this.move_rate;
+      if (curve) {
+        const point = curve.getPoint(this.progress);
+        // 下一个要走的点的位置
+        const point_next = curve.getPoint(this.progress + this.move_rate);
+        if (point && point.x) {
+         
+          truck.position.set(point.x, point.y, point.z);
+          // 向下一个要走的点方向看齐
+          truck.lookAt(point_next.x, point_next.y, point_next.z);
+          if (this.followTruck) {
+            this.camera.position.set(point.x, point.y + 45, point.z);
+            this.camera.lookAt(point_next.x, point_next.y + 45, point_next.z);
+            this.controls.position0.set(point.x, point.y + 45, point.z);
+            // 将控制器看齐下一个点的位置(摆正车头的位置)
+            this.controls.target.set(point_next.x, point_next.y + 45, point_next.z);
+          }
+        }
+      }
+      // 将canvas车速标签跟随汽车移动显示
+      if (this.dynamicSprite) {
+        this.dynamicSprite.position.set(
+          truck.position.x,
+          truck.position.y,
+          truck.position.z
+        );
+        this.dynamicSprite.translateY(100);
+      }
+    },
+
     // 汽车运动
     truckMove(curve, truck) {
       // console.log(this.car.position)
@@ -1094,6 +1223,11 @@ export default {
       this.css2dRender.render(this.scene, this.camera);
       // 汽车移动方法
       this.truckMove(this.curve2, this.car);
+      //agv移动方法
+      this.agvMove(this.curve3, this.agv);
+
+      // console.log(this.agv.position,"this.agv")
+      // console.log(this.agv,"this.agv")
       // this.truckMove(this.curve, this.truck);
       // this.test();
       // 扫描效果
