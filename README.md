@@ -47,7 +47,7 @@
 <img src="./readme/表格1.png" />
 <br>
 
-这里的dashboard提供可视化管理表格，这里是我随便用echarts做了一下，这里的样式优化空间是很大的
+这里的dashboard提供可视化管理表格，这里是我随便用echarts做了一下，这里的样式优化空间是很大的.
 
 <br>
 
