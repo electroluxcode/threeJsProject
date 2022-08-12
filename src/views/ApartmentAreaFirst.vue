@@ -411,7 +411,7 @@ export default {
                   centroid.multiplyScalar(0.5);
                   centroid.applyMatrix4(child.matrixWorld);
                   child.geometry.center(centroid.x, centroid.y, centroid.z);
-                  child.position.set(centroid.x, centroid.y-300, centroid.z );
+                  child.position.set(centroid.x, centroid.y, centroid.z );
                   console.log(child.position,"agv")
                   
                   console.log(child.name,"user的名字")
@@ -419,7 +419,7 @@ export default {
                 // const centroid = new THREE.Vector3();
                 
                 
-                obj.scale.set(1,0.1,1)
+                obj.scale.set(1,0.1,1.3)
                 // obj.position.set(new THREE.Vector3(200,50,1400))
                 // obj.position.x=-30
                 // obj.position.y=0
@@ -703,15 +703,15 @@ export default {
     initAgvCurve(obj) {
       this.curve3 = new THREE.CatmullRomCurve3(
         [
-           new THREE.Vector3(500, 20, -1200),
-          new THREE.Vector3(500, 20, -800),
-          new THREE.Vector3(500, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(200, 20, -600),
+           new THREE.Vector3(500, 0, -1200),
+          new THREE.Vector3(500, 0, -800),
+          new THREE.Vector3(500, 0, -500),
+          new THREE.Vector3(200, 0, -500),
+          new THREE.Vector3(200, 0, -500),
+          new THREE.Vector3(200, 0, -500),
+          new THREE.Vector3(200, 0, -500),
+          new THREE.Vector3(200, 0, -500),
+          new THREE.Vector3(200, 0, -500),
           // new THREE.Vector3(-400, 20, 300),
           // new THREE.Vector3(-400, 20, 250),
         ],
@@ -768,12 +768,12 @@ export default {
         [
          
         
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(500, 20, -600),
-          new THREE.Vector3(500, 20, -800),
-           new THREE.Vector3(500, 20, -1200),
-            new THREE.Vector3(500, 20, -1200),
-             new THREE.Vector3(500, 20, -1200),
+          new THREE.Vector3(200, 30, -600),
+          new THREE.Vector3(500, 30, -600),
+          new THREE.Vector3(500, 30, -800),
+           new THREE.Vector3(500, 30, -1200),
+            new THREE.Vector3(500, 30, -1200),
+             new THREE.Vector3(500, 30, -1200),
           // new THREE.Vector3(500, 20, 400),
           // new THREE.Vector3(-400, 20, 400),
           // new THREE.Vector3(-400, 20, -600),
@@ -781,22 +781,24 @@ export default {
         ],
         true
       );
-      // this.curve = new THREE.CatmullRomCurve3(
-      //   [
-      //     new THREE.Vector3(500, 20, -1200),
-      //     new THREE.Vector3(500, 20, -800),
-      //     new THREE.Vector3(500, 20, -600),
-      //     new THREE.Vector3(200, 20, -600),
-      //     new THREE.Vector3(200, 20, -600),
-      //     new THREE.Vector3(200, 20, -600),
-
-      //     // new THREE.Vector3(500, 20, 400),
-      //     // new THREE.Vector3(-400, 20, 400),
-      //     // new THREE.Vector3(-400, 20, -600),
-      //     // new THREE.Vector3(-400, 20, -1300),
-      //   ],
-      //   true
-      // );
+      //回来的agv路线
+      this.curve2 = new THREE.CatmullRomCurve3(
+        [
+         
+        
+          new THREE.Vector3(200, 0, -600),
+          new THREE.Vector3(500, 0, -600),
+          new THREE.Vector3(500, 0, -800),
+           new THREE.Vector3(500, 0, -1200),
+            new THREE.Vector3(500, 0, -1200),
+             new THREE.Vector3(500, 0, -1200),
+          // new THREE.Vector3(500, 20, 400),
+          // new THREE.Vector3(-400, 20, 400),
+          // new THREE.Vector3(-400, 20, -600),
+          // new THREE.Vector3(-400, 20, -1300),
+        ],
+        true
+      );
       const vertices = this.curve.getPoints(100);
       const geometry = new THREE.BufferGeometry().setFromPoints(vertices);
       const lineMaterial = new THREE.LineBasicMaterial({
@@ -812,27 +814,27 @@ export default {
     },
     // 初始化卡车2的移动路线
     initTruckCurve(obj) {
-      this.curve2 = new THREE.CatmullRomCurve3(
-        [
-          new THREE.Vector3(-400, 20, 400),
-          new THREE.Vector3(-400, 20, 250),
-          // new THREE.Vector3(-400, 20, -1300),
-          new THREE.Vector3(-400, 20, 0),
-          new THREE.Vector3(-200, 20, 0),
-          new THREE.Vector3(-200, 20, 0),
-          new THREE.Vector3(-200, 20, 0),
-          new THREE.Vector3(-200, 20, 0),
-          new THREE.Vector3(-200, 20, 0),
-          new THREE.Vector3(-200, 20, 0),
-          new THREE.Vector3(-200, 20, 0),
+      // this.curve2 = new THREE.CatmullRomCurve3(
+      //   [
+      //     new THREE.Vector3(-400, 20, 400),
+      //     new THREE.Vector3(-400, 20, 250),
+      //     // new THREE.Vector3(-400, 20, -1300),
+      //     new THREE.Vector3(-400, 20, 0),
+      //     new THREE.Vector3(-200, 20, 0),
+      //     new THREE.Vector3(-200, 20, 0),
+      //     new THREE.Vector3(-200, 20, 0),
+      //     new THREE.Vector3(-200, 20, 0),
+      //     new THREE.Vector3(-200, 20, 0),
+      //     new THREE.Vector3(-200, 20, 0),
+      //     new THREE.Vector3(-200, 20, 0),
 
-          // new THREE.Vector3(-1000, 20, -1200),
-          // new THREE.Vector3(-1100, 20, -600),
-          // new THREE.Vector3(-1100, 20, -800),
-          // new THREE.Vector3(-1100, 20, 500),
-        ],
-        true
-      );
+      //     // new THREE.Vector3(-1000, 20, -1200),
+      //     // new THREE.Vector3(-1100, 20, -600),
+      //     // new THREE.Vector3(-1100, 20, -800),
+      //     // new THREE.Vector3(-1100, 20, 500),
+      //   ],
+      //   true
+      // );
       const vertices = this.curve2.getPoints(100);
       const geometry = new THREE.BufferGeometry().setFromPoints(vertices);
       const lineMaterial = new THREE.LineBasicMaterial({
@@ -1043,7 +1045,7 @@ export default {
       this.css2dRender.render(this.scene, this.camera);
       // 汽车移动方法
       this.truckMove(this.curve, this.truck);
-      
+      this.truckMove(this.curve2, this.agv);
       
 
       //agv移动方式

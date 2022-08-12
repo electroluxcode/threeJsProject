@@ -414,6 +414,7 @@ export default {
 
       //加载agv模型
       let obj3 = await this.initModelAgv("agv");
+      
 
       this.cloneBuilding(obj.clone());
       // 初始化行驶路线
@@ -537,7 +538,7 @@ export default {
                   centroid.multiplyScalar(0.5);
                   centroid.applyMatrix4(child.matrixWorld);
                   child.geometry.center(centroid.x, centroid.y, centroid.z);
-                  child.position.set(centroid.x, centroid.y-300, centroid.z );
+                  child.position.set(centroid.x, centroid.y-200, centroid.z );
                   console.log(child.position,"agv")
                   
                   console.log(child.name,"user的名字")
@@ -545,7 +546,7 @@ export default {
                 // const centroid = new THREE.Vector3();
                 
                 
-                obj.scale.set(1,0.1,1)
+                obj.scale.set(1,0.1,1.3)
                 // obj.position.set(new THREE.Vector3(200,50,1400))
                 // obj.position.x=-30
                 // obj.position.y=0
@@ -888,13 +889,14 @@ export default {
     initCurve(obj) {
       this.curve = new THREE.CatmullRomCurve3(
         [
-          new THREE.Vector3(500, 20, -1200),
-          new THREE.Vector3(500, 20, -800),
-          new THREE.Vector3(500, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-          new THREE.Vector3(200, 20, -600),
-
+          new THREE.Vector3(500, 0, -1200),
+          new THREE.Vector3(500, 0, -800),
+          new THREE.Vector3(500, 0, -600),
+          new THREE.Vector3(200, 0, -600),
+          new THREE.Vector3(200, 0, -600),
+          new THREE.Vector3(200, 0, -600),
+          new THREE.Vector3(200, 0, -600),
+          new THREE.Vector3(200, 0, -600),
           // new THREE.Vector3(500, 20, 400),
           // new THREE.Vector3(-400, 20, 400),
           // new THREE.Vector3(-400, 20, -600),
