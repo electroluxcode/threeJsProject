@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 100%" class="manage">
-    <el-aside width="180">
+    <el-aside width="180" class="sidebarThree">
       <el-menu
         background-color="rgb(0,21,41)"
         text-color="#fff"
@@ -16,9 +16,7 @@
           <div></div>
         </div>
         <el-submenu :index="item.id" v-for="item in menuList" :key="item.index">
-          <template slot="title"
-            ><i :class="item.icon"></i>{{ item.title }}</template
-          >
+          <template slot="title"><i :class="item.icon"></i>{{ item.title }}</template>
           <el-menu-item
             :index="ele.index"
             v-for="ele in item.childrenlist"
@@ -32,33 +30,8 @@
     </el-aside>
 
     <el-container>
-      <el-header style="text-align: right; font-size: 12px">
-        <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
-          <el-breadcrumb-item>{{ $t("menuTitle.index") }}</el-breadcrumb-item>
-          <el-breadcrumb-item>{{ manage_name }}</el-breadcrumb-item>
-          <el-breadcrumb-item>{{ list_name }}</el-breadcrumb-item>
-        </el-breadcrumb>
-        <div class="lang_change">
-          <div @click="changeLanguage('zh-Chinese')">
-            {{ $t("language.zh") }}
-          </div>
-          <div @click="changeLanguage('zh-Tibetan')">
-            {{ $t("language.en") }}
-          </div>
-        </div>
-        <i
-          class="el-icon-setting"
-          style="font-size: 17px; position: absolute; right: 74px; top: 22px"
-        ></i>
-        <span
-          style="font-size: 17px"
-          class="usertext"
-          @click="$router.push('/apartmentArea')"
-          >{{ username }}</span
-        >
-      </el-header>
-
       <el-main>
+        <navbar style="width: 100%;" class="navbarThree"></navbar>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -66,6 +39,7 @@
 </template>
 
 <script>
+import navbar from "@/views/Navbar";
 export default {
   data() {
     return {
@@ -151,7 +125,18 @@ export default {
       ],
     };
   },
-  mounted() {},
+  mounted() {
+     if (document.body.clientWidth < 800) {
+        
+        document.querySelector(".sidebarThree").style.cssText ="margin-left:-200px";
+
+      }else{
+
+      }
+  },
+  components: {
+    navbar,
+  },
   methods: {
     handleSelect(index) {
       this.menu_idx = index.substring(0, 1);
@@ -175,7 +160,45 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scope>
+
+@-webkit-keyframes move_right {
+  from {
+    opacity: 0;
+    margin-left:-140px
+  }
+  to {
+    opacity: 1;
+    // -webkit-transform: translateX(10px);
+    // transform: translateX(10px);
+    margin-left:0px
+  }
+}
+@keyframes move_right {
+  from {
+    opacity: 0;
+    margin-left:-140px;
+
+  }
+  to {
+    opacity: 1;
+    // -webkit-transform: translateX(160px);
+    // transform: translateX(160px);
+    margin-left:-0px
+  }
+}
+
+.move_right {
+  -webkit-animation-name: move_right;
+  animation-name: move_right;
+  -webkit-animation-duration: 0.1s;
+  animation-duration: 0.11s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
 .manage {
   .el-header {
     background-color: rgb(0, 21, 41);

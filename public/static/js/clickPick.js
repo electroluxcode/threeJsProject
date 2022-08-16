@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 export const clickPick = (_this) => {
-  const rayCaster = new THREE.Raycaster();
+  var rayCaster = new THREE.Raycaster();
   const mouse = new THREE.Vector2();
   let x, y;
   const selectedObjects = [];

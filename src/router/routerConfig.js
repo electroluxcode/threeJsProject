@@ -5,6 +5,11 @@ const routes = [
     component: () => import("../views/MainPage.vue"),
   },
   {
+    path: "login",
+    name: "MainPage1",
+    component: () => import("../views/loginElement.vue"),
+  },
+  {
     path: "backstageManage",
     name: "backstageManage",
     component: () => import("../views/backstageManage.vue"),
@@ -47,15 +52,16 @@ const routes = [
       },
     ],
   },
-  {
-    path: "apartmentArea",
-    name: "apartmentArea",
-    component: () => import("../views/ApartmentArea.vue"),
-  },
+ 
   {
     path: "apartmentAreaFirst",
     name: "apartmentAreaFirst",
     component: () => import("../views/ApartmentAreaFirst.vue"),
+  },
+  {
+    path: "apartmentArea",
+    name: "apartmentArea",
+    component: () => import("../views/ApartmentArea.vue"),
   },
   {
     path: "buildingdetail",

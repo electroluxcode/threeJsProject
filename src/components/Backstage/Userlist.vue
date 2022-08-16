@@ -192,6 +192,8 @@ export default {
 <style lang="scss">
 .Userlist {
   .dialog_btn {
+    margin:30px;
+    margin-left:0px !important;
     width: 90px;
     height: 40px;
     display: inline-block;

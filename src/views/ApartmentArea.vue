@@ -6,16 +6,17 @@
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.8)"
   >
-    <div v-if="Number(status) === 1">
-      <el-aside width="180" style="height: 100%">
+    <div v-if="Number(status) === 1" class="">
+      <el-aside width="120" style="height: 100% ;display:fixed" class="sidebarThree" >
         <el-menu
+        
           default-active="0"
           background-color="#050505"
           text-color="#fff"
           active-text-color="#ffd04b"
           @select="handleSelect"
         >
-          <div class="user_box" @click="logout">
+          <div class="user_box" @click="switchHtml">
             <div class="username"><i class="el-icon-user-solid"></i> {{ username }}</div>
             <div></div>
           </div>
@@ -30,7 +31,7 @@
         </el-menu>
       </el-aside>
     </div>
-    <div v-else>
+    <!-- <div v-else>
       <el-aside width="180" style="height: 100%">
         <el-menu
           default-active="0"
@@ -52,8 +53,9 @@
           </el-menu-item>
         </el-menu>
       </el-aside>
-    </div>
+    </div> -->
     <el-main>
+      <navbar style="width:100%" class="navbarThree"></navbar>
       <div id="container" class="container_box"></div>
       <el-card style="width: 300px" class="label">
         <div v-for="(info, index) in dataInfo" :key="index">
@@ -69,6 +71,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import * as THREE from "three";
 import * as echarts from "echarts";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -88,6 +91,7 @@ import {
   buildstatus,
 } from "@/requestApi/city";
 import { clickPick } from "../../public/static/js/clickPick";
+import navbar from "@/views/Navbar";
 // import {
 //   initPark,
 //   initAmbulance,
@@ -105,12 +109,12 @@ import { initEchartOption1, initEchartOption2 } from "../utils/echarts";
 import { initRenderer, initControls } from "../utils/baseElement";
 
 //引入socket测试
-import io from 'socket.io-client'
+import io from "socket.io-client";
 // const socket = io('http://localhost:3002');
 export default {
   data() {
     return {
-      personObj:[],
+      personObj: [],
       menuList: [
         { text: "详情管理", icon: "el-icon-s-home" },
         { text: "汽车停放时间", icon: "el-icon-collection-tag" },
@@ -148,7 +152,7 @@ export default {
       curve2: null,
       curve3: null,
       truck: null,
-      agv:null,
+      agv: null,
       car: null,
       followTruck: false,
       followPerson: false,
@@ -203,15 +207,28 @@ export default {
       param: {
         floor: 1,
       },
-      robot:[],
-      robotObj:[],
-      name:null,
-      hideCanvas:true,
+      robot: [],
+      robotObj: [],
+      name: null,
+      hideCanvas: true,
       hotZoneData: null,
-      socket:io('http://localhost:3002')
+      socket: io("http://localhost:3002"),
     };
   },
+  components: {
+    navbar,
+  },
+ 
+    
+ 
+ watch:{
+
+ },
   mounted() {
+    // setTimeout(()=>{
+
+    // },1000)
+
     // this.username = localStorage.getItem("username");
     this.username = "管理员";
     this.status = 1;
@@ -249,11 +266,11 @@ export default {
     this.isShowFire = false;
     this.clock = new THREE.Clock();
     this.container = document.querySelector("#container");
+    
     this.citylistMed();
     this.raychartlistMed();
     this.barchartlistMed();
     this.buildstatusMed();
-    
 
     //初始化socket 连接
     clearInterval(this.timer);
@@ -261,16 +278,37 @@ export default {
     // window.addEventListener('DOMContentLoaded', function () {
     //     that.socketIo()
     // })
-    this.socketIo()
+    this.socketIo();
 
-    this.socket.on('message', (message) => {
-          console.log(message,"收到的message")
-          document.querySelector('.talk_show').innerHTML+='<div class="btalk"><span id="asay">'+message+'</span></div>'
-    })
-    
+    this.socket.on("message", (message) => {
+      console.log(message, "收到的message");
+      document.querySelector(".talk_show").innerHTML +=
+        '<div class="btalk"><span id="asay">' + message + "</span></div>";
+    });
+
     this.init();
-
-
+   var that=this
+    this.$nextTick(() => {
+      
+      setTimeout(()=>{
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+            this.css2dRender.setSize(this.container.clientWidth, this.container.clientHeight);
+      },12000)
+      if (document.body.clientWidth < 800) {
+        this.camera.position.set(1000, 2000, 3500); 
+        document.querySelector(".sidebarThree").style.cssText ="margin-left:-160px";
+        setTimeout(() => {
+         document.querySelector('.allow-touch-styles').style.cssText="display:none !important"      
+        }, 2500);
+      }else{
+      }
+      
+    });
+        document.body.addEventListener('touchmove', function(e){
+          e.preventDefault();
+      }, { passive: false });  //passive 参数不能省略，用来兼容ios和android
   },
   beforeDestroy() {
     this.scene.clear();
@@ -286,31 +324,32 @@ export default {
     this.controls = null;
     this.outlinePass = null;
     this.css2dRender = null;
-    
   },
   methods: {
-    
-    initData(){
-        let that=this
-        this.$axios.get('http://localhost:3002/hotZone').then(function (response) {
+    initData() {
+      let that = this;
+      this.$axios
+        .get("http://localhost:3002/hotZone")
+        .then(function (response) {
           console.log(response);
-          that.hotZoneData=response.data
-        }).catch(function (error) {
+          that.hotZoneData = response.data;
+        })
+        .catch(function (error) {
           console.log(error);
         });
-      },
-      socketIo(){
-        this.socket.on('connect',function(){
-          console.log('socket连接成功');
-          //客户端连接成功后发送消息'welcome'
-          // socket.send('welcome');
-        })
-      },
-    goToChat(){
-      this.$router.push({path:"chat"})
     },
-    goToDetail(){
-      this.$router.push({path:"buildingdetail?name=dep1"})
+    socketIo() {
+      this.socket.on("connect", function () {
+        console.log("socket连接成功");
+        //客户端连接成功后发送消息'welcome'
+        // socket.send('welcome');
+      });
+    },
+    goToChat() {
+      this.$router.push({ path: "chat" });
+    },
+    goToDetail() {
+      this.$router.push({ path: "buildingdetail?name=dep1" });
     },
     handleSelect(index) {
       switch (index) {
@@ -340,13 +379,13 @@ export default {
           this.tourCity();
           break;
         case "8":
-          this.addDoor()
+          this.addDoor();
           break;
         case "9":
-          this.goToDetail()
+          this.goToDetail();
           break;
         case "10":
-          this.goToChat()
+          this.goToChat();
           break;
       }
     },
@@ -369,13 +408,13 @@ export default {
     // tourCity
     tourCity() {
       this.normalView = false;
-      console.log(this.scene,"this.scene")
+      console.log(this.scene, "this.scene");
       this.camera.position.y = 100;
       this.camera.lookAt(0, 100, 0);
       // this.lockcontrols.getObject().position.x = 0;
       // this.lockcontrols.getObject().position.y = 100;
       // this.lockcontrols.getObject().position.z = 580;
-      this.lockcontrols.getObject().position.x = this.robot[0].position.x-1280;
+      this.lockcontrols.getObject().position.x = this.robot[0].position.x - 1280;
       this.lockcontrols.getObject().position.y = this.robot[0].position.y;
       this.lockcontrols.getObject().position.z = this.robot[0].position.z;
       // this.scene.add(this.personObj)
@@ -390,7 +429,7 @@ export default {
       // 初始化灯光
       this.initLight();
       // 初始化性能检测器
-      this.initStats();
+      // this.initStats();
       // 初始化渲染器
       this.initRendererMed();
       // 初始化控制器
@@ -402,7 +441,12 @@ export default {
       this.initClickPick();
       this.carParkMed();
       this.AsyncInitModel();
+      this.onWindowResize()
       window.addEventListener("resize", this.onWindowResize, false);
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+      this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
+      this.css2dRender.setSize(this.container.clientWidth, this.container.clientHeight);
     },
     // 使用async方法加载模型
     async AsyncInitModel() {
@@ -414,12 +458,11 @@ export default {
 
       //加载agv模型
       let obj3 = await this.initModelAgv("agv");
-      
 
       this.cloneBuilding(obj.clone());
       // 初始化行驶路线
       this.initCurve(obj);
-      this.initAgvCurve(obj3)
+      this.initAgvCurve(obj3);
       this.initTruckCurve(obj);
 
       this.initGui(this.status);
@@ -534,26 +577,25 @@ export default {
                     child.geometry.boundingBox.min,
                     child.geometry.boundingBox.max
                   );
-                  //分离程度，越大分离越离谱  
+                  //分离程度，越大分离越离谱
                   centroid.multiplyScalar(0.5);
                   centroid.applyMatrix4(child.matrixWorld);
                   child.geometry.center(centroid.x, centroid.y, centroid.z);
-                  child.position.set(centroid.x, centroid.y-200, centroid.z );
-                  console.log(child.position,"agv")
-                  
-                  console.log(child.name,"user的名字")
+                  child.position.set(centroid.x, centroid.y - 200, centroid.z);
+                  console.log(child.position, "agv");
+
+                  console.log(child.name, "user的名字");
                 });
                 // const centroid = new THREE.Vector3();
-                
-                
-                obj.scale.set(1,0.1,1.3)
+
+                obj.scale.set(1, 0.1, 1.3);
                 // obj.position.set(new THREE.Vector3(200,50,1400))
                 // obj.position.x=-30
                 // obj.position.y=0
                 // obj.position.z=420
                 //  console.log(obj.position,"obj")
                 // this.agv=obj.getObjectByName('agv')
-                this.agv=obj
+                this.agv = obj;
                 this.scene.add(obj);
                 resolve(obj);
               } else {
@@ -583,24 +625,26 @@ export default {
                     child.geometry.boundingBox.min,
                     child.geometry.boundingBox.max
                   );
-                  //分离程度，越大分离越离谱  
+                  //分离程度，越大分离越离谱
                   centroid.multiplyScalar(0.5);
                   centroid.applyMatrix4(child.matrixWorld);
                   child.geometry.center(centroid.x, centroid.y, centroid.z);
-                  child.position.set(centroid.x-6000, centroid.y+650, centroid.z+200 );
-                  
-                  
-                  console.log(child.name,"user的名字")
+                  child.position.set(
+                    centroid.x - 6000,
+                    centroid.y + 650,
+                    centroid.z + 200
+                  );
+
+                  console.log(child.name, "user的名字");
                 });
                 // const centroid = new THREE.Vector3();
-                
-             
-                obj.scale.set(0.1,0.1,0.1)
-                this.robotObj=obj.getObjectByName('FIN')
-                   console.log(this.robotObj,"this.robotObj")
+
+                obj.scale.set(0.1, 0.1, 0.1);
+                this.robotObj = obj.getObjectByName("FIN");
+                console.log(this.robotObj, "this.robotObj");
                 // obj.position.set(new THREE.Vector3(0,10,0))
-                this.robot.push(obj)
-                
+                this.robot.push(obj);
+
                 this.scene.add(obj);
                 resolve(obj);
               } else {
@@ -629,24 +673,27 @@ export default {
                     child.geometry.boundingBox.min,
                     child.geometry.boundingBox.max
                   );
-                  //分离程度，越大分离越离谱  
+                  //分离程度，越大分离越离谱
                   centroid.multiplyScalar(0.5);
                   centroid.applyMatrix4(child.matrixWorld);
                   child.geometry.center(centroid.x, centroid.y, centroid.z);
-                  child.position.set(centroid.x+4000, centroid.y+650, centroid.z+200 );
-                  child.name="FIN2"
-                  
-                  console.log(child.name,"user的名字")
+                  child.position.set(
+                    centroid.x + 4000,
+                    centroid.y + 650,
+                    centroid.z + 200
+                  );
+                  child.name = "FIN2";
+
+                  console.log(child.name, "user的名字");
                 });
                 // const centroid = new THREE.Vector3();
-                
-             
-                obj.scale.set(0.1,0.1,0.1)
+
+                obj.scale.set(0.1, 0.1, 0.1);
                 // this.robotObj=obj.getObjectByName('FIN')
                 //    console.log(this.robotObj,"this.robotObj")
                 // obj.position.set(new THREE.Vector3(0,10,0))
-                this.robot.push(obj)
-                
+                this.robot.push(obj);
+
                 this.scene.add(obj);
                 resolve(obj);
               } else {
@@ -714,14 +761,17 @@ export default {
           personObj.scale.set(50, 50, 50);
           personObj.position.set(700, 10, 0);
           const group = new THREE.Group();
-          
-          
-          this.personObj=personObj
-         
+
+          this.personObj = personObj;
+
           group.add(personObj);
-     
+
           group.name = "people";
-          this.scene.add(group,group.clone().translateX(30),group.clone().translateY(30));
+          this.scene.add(
+            group,
+            group.clone().translateX(30),
+            group.clone().translateY(30)
+          );
           group.traverse(function (child) {
             if (child.type === "Mesh") {
               child.material.emissive = child.material.color;
@@ -732,50 +782,47 @@ export default {
           this.mixer = new THREE.AnimationMixer(group);
           this.AnimationAction = this.mixer.clipAction(gltf.animations[0]);
           this.AnimationAction.timeScale = 0.8;
-          console.log(this.scene.getObjectByName("people"))
+          console.log(this.scene.getObjectByName("people"));
           // this.AnimationAction.play();
         });
 
-         
-        // new GLTFLoader()
-        // .setPath("/static/obj/female_slow_walk_40_frames_loop/")
-        // .load("scene.gltf", (gltf) => {
-        //   const personObj = gltf.scene;
-        //   personObj.scale.set(50, 50, 50);
-        //   personObj.position.set(750, 10, 10);
-        //   const group = new THREE.Group();
-          
-        //   //自己加的
-        //   this.personObj=personObj
-        //   const personObj1 = gltf.scene;
-       
-          
+      // new GLTFLoader()
+      // .setPath("/static/obj/female_slow_walk_40_frames_loop/")
+      // .load("scene.gltf", (gltf) => {
+      //   const personObj = gltf.scene;
+      //   personObj.scale.set(50, 50, 50);
+      //   personObj.position.set(750, 10, 10);
+      //   const group = new THREE.Group();
 
-        //   group.add(personObj);
-        //   group.add(personObj1);
-        //   group.name = "people2";
-        //   this.scene.add(group);
-        //   group.traverse(function (child) {
-        //     if (child.type === "Mesh") {
-        //       child.material.emissive = child.material.color;
-        //       child.material.emissiveMap = child.material.map;
-        //     }
-        //   });
-        //   this.person = group;
-        //   this.mixer = new THREE.AnimationMixer(group);
-        //   this.AnimationAction = this.mixer.clipAction(gltf.animations[0]);
-        //   this.AnimationAction.timeScale = 0.8;
-        //   // this.AnimationAction.play();
-        // });
+      //   //自己加的
+      //   this.personObj=personObj
+      //   const personObj1 = gltf.scene;
+
+      //   group.add(personObj);
+      //   group.add(personObj1);
+      //   group.name = "people2";
+      //   this.scene.add(group);
+      //   group.traverse(function (child) {
+      //     if (child.type === "Mesh") {
+      //       child.material.emissive = child.material.color;
+      //       child.material.emissiveMap = child.material.map;
+      //     }
+      //   });
+      //   this.person = group;
+      //   this.mixer = new THREE.AnimationMixer(group);
+      //   this.AnimationAction = this.mixer.clipAction(gltf.animations[0]);
+      //   this.AnimationAction.timeScale = 0.8;
+      //   // this.AnimationAction.play();
+      // });
     },
     // 初始化stats
     initStats() {
-      this.stats = new Stats();
-      this.stats.domElement.style.position = "absolute";
-      this.stats.domElement.style.top = "0px";
-      this.stats.domElement.style.left = "180px";
-      document.body.appendChild(this.stats.domElement);
-      return this.stats;
+      // this.stats = new Stats();
+      // this.stats.domElement.style.position = "absolute";
+      // this.stats.domElement.style.top = "0px";
+      // this.stats.domElement.style.left = "180px";
+      // document.body.appendChild(this.stats.domElement);
+      // return this.stats;
     },
     // 初始化控制板
     initGui(status) {
@@ -963,7 +1010,7 @@ export default {
       this.scene.add(curveMesh2);
 
       this.car = obj.getObjectByName("car4");
-      console.log(this.car.position,"this.car")
+      console.log(this.car.position, "this.car");
     },
 
     // 初始化AGV的移动路线
@@ -1009,7 +1056,6 @@ export default {
         // 下一个要走的点的位置
         const point_next = curve.getPoint(this.progress + this.move_rate);
         if (point && point.x) {
-         
           truck.position.set(point.x, point.y, point.z);
           // 向下一个要走的点方向看齐
           truck.lookAt(point_next.x, point_next.y, point_next.z);
@@ -1068,7 +1114,7 @@ export default {
       }
     },
     test() {
-      this.followPerson=1
+      this.followPerson = 1;
       // const {x,y,z} = this.person.position
       if (this.followPerson) {
         this.camera.position.set(
@@ -1156,13 +1202,11 @@ export default {
     },
     // 第一人称移动 需要在render()里面实时更新位置
     firstPersonMove() {
-    
       // console.log(this.robotObj)
 
-      
-      this.robotObj.position.x=this.lockcontrols.getObject().position.x*10+300
-      this.robotObj.position.y=this.lockcontrols.getObject().position.y*10-700
-      this.robotObj.position.z=this.lockcontrols.getObject().position.z*10
+      this.robotObj.position.x = this.lockcontrols.getObject().position.x * 10 + 300;
+      this.robotObj.position.y = this.lockcontrols.getObject().position.y * 10 - 700;
+      this.robotObj.position.z = this.lockcontrols.getObject().position.z * 10;
       // this.person.position=this.lockcontrols.getObject().position
       // console.log(this.robotObj.position)
       // if (this.lockcontrols.isLocked) {
@@ -1207,16 +1251,13 @@ export default {
       this.texture.offset.x = Math.floor(this.t) / num; // 动态更新纹理偏移 播放关键帧动画 产生火焰然后效果
     },
     render() {
-      
-
-
       this.animationID = requestAnimationFrame(this.render);
-      
+
       this.renderer.render(this.scene, this.camera);
       if (this.lockcontrols.isLocked) {
         this.firstPersonMove();
       }
-      this.stats.update();
+      // this.stats.update();
       // 刷新动画
       TWEEN.update();
       const delta = this.clock.getDelta();
@@ -1264,8 +1305,8 @@ export default {
         this.fireArray.splice(0);
         this.isShowFire = false;
       } else {
-        const depObj = this.scene.children[this.groupIndex].children.filter((item) =>
-          item.name.includes("trafficLight")
+        const depObj = this.scene.children[this.groupIndex].children.filter(
+          (item) => item.name.includes("trafficLight")
           // console.log(item.name)
         );
         depObj.forEach((ele) => {
@@ -1403,7 +1444,7 @@ export default {
         });
       }
     },
-    
+
     // 添加摄像头标签
     addCamera() {
       const trr = ["trafficLight1", "trafficLight5", "trafficLight3"];
@@ -1444,8 +1485,8 @@ export default {
         }
         this.spriteLabelArray.splice(0);
       } else {
-        trr.forEach((item,index) => {
-          console.log(trr1[index])
+        trr.forEach((item, index) => {
+          console.log(trr1[index]);
           const obj = this.scene.getObjectByName(item);
           const spriteMaterial = new THREE.SpriteMaterial({
             map: new THREE.TextureLoader().load(imgUrl),
@@ -1520,6 +1561,7 @@ export default {
     },
     // 屏幕自适应
     onWindowResize() {
+      console.log(this.container.clientWidth, this.container.clientWidth, "宽高");
       this.camera.aspect = window.innerWidth / window.innerHeight;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
@@ -1609,10 +1651,55 @@ export default {
       window.localStorage.removeItem("username");
       window.localStorage.removeItem("status");
     },
+    switchHtml() {
+      this.$router.replace("/backstageManage/userlist");
+      window.localStorage.removeItem("username");
+      window.localStorage.removeItem("status");
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import "@/assets/css/page/apartmentArea.scss";
+// @-webkit-keyframes move_right {
+//   from {
+//     opacity: 0;
+//     display: fixed;
+//     margin-left:-140px
+//   }
+//   to {
+//     opacity: 1;
+//     // -webkit-transform: translateX(10px);
+//     // transform: translateX(10px);
+//     margin-left:0px
+//   }
+// }
+@keyframes move_right {
+  from {
+    opacity: 0;
+    margin-left:-140px;
+    position: absolute;
+    
+  }
+  to {
+    opacity: 1;
+    // -webkit-transform: translateX(160px);
+    // transform: translateX(160px);
+     position: absolute;
+    margin-left:-0px;
+    z-index: 999;
+  }
+}
+
+.move_right {
+  -webkit-animation-name: move_right;
+  animation-name: move_right;
+  -webkit-animation-duration: 0.1s;
+  animation-duration: 0.11s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
 </style>

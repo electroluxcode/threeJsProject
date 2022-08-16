@@ -10,7 +10,7 @@ import $ from 'jquery'
 // import VueAwesomeSwiper from 'vue-awesome-swiper'
 // import '/swiper/css/swiper.css'
 // Vue.use(VueAwesomeSwiper, /* { default options with global component } */)
-
+import store from '@/store'
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
@@ -19,6 +19,7 @@ let mainVue = new Vue({
   $,
   i18n,
   router,
+  store,
   render: function (h) {
     return h(App);
   },

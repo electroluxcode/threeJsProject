@@ -121,7 +121,9 @@ export default {
   mounted() {
     this.$i18n.locale = "zh-Tibetan";
     localStorage.setItem("languageSet", this.$i18n.locale);
-
+    if(document.body.clientWidth<700){
+      this.$router.push({path:'/login'})
+    }
     // $('select').change(function(){
     //     $(this).css('color','#272727');
     //     $(this).css('font-weight','400');
@@ -583,4 +585,5 @@ p.login-cr {
   font-family: SourceHanSansCN-Medium, SourceHanSansCN;
   font-weight: 600;
 }
+
 </style>

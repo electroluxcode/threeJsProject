@@ -1,6 +1,13 @@
-# threejs版本的控制系统（效果可以看readme文件夹下面的MP4文件）
+# threejs版本的控制系统（效果可以看readme文件）
 
-新加上了agv建模，和模拟取车的场景
+demo ver0.2
+新加上了移动端适配
+
+<img src="./readme/移动端1.png" style="width:30%"/>
+<img src="./readme/移动端3.png" style="width:32%"/>
+<img src="./readme/移动端2.png" style="width:32%"/>
+
+demo ver0.1新加上了agv建模，和模拟取车的场景
 
 <img src="./readme/agv.png" />
 
