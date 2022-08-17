@@ -1,5 +1,8 @@
 # threejs版本的控制系统（效果可以看readme文件）
 
+## demo ver0.3 新加了数据可视化大屏
+路径：data
+<img src="./readme/data.png" style="width:100%"/>
 ## demo ver0.2
 新加上了移动端适配
 

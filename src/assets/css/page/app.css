@@ -125,4 +125,19 @@
 	bottom: 120px;
 	right: 20px;
 }
+@media screen and (max-width : 11900px){
+	.header{
+	  display: none !important;
+	}
+	.left{
+	  display: none !important;
+	}
+	.xpanel-wrapper-1-3{
+	  display: none !important;
+	}
+	#container{
+		width: 100%;
+		height: 100%;
+	}
+  }
 /* 将详情页的接口写好 */

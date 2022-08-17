@@ -96,13 +96,15 @@ export default {
       console.log(this.device, "device");
     },
     toggle(){
-      var sidebarEl = document.querySelector(".sidebarThree");
-      sidebarEl.classList.toggle("move_right");
+      if(window.innerWidth<700){
+        var sidebarEl = document.querySelector(".sidebarThree");
+        sidebarEl.classList.toggle("move_right");
+      }
+
+      
     },
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
-      console.log(this.$store.state.app.sidebar)
-      var sidebarEl = document.querySelector(".sidebarThree");
+      
     
         
         // document.querySelector(".sidebarThree").style.cssText="height:100% !important"
@@ -110,7 +112,15 @@ export default {
         // sidebarEl.style.left = "-100px !important";
         // document.querySelector(".sidebar").style.cssText =
         //   "display:block;position:fixed;height:100vh !important";
-      sidebarEl.classList.toggle("move_right");
+      if(window.innerWidth<700){
+        console.log(window.innerWidth)
+        this.$store.dispatch("app/toggleSideBar");
+        console.log(this.$store.state.app.sidebar)
+        var sidebarEl = document.querySelector(".sidebarThree");
+         sidebarEl.classList.toggle("move_right");
+         
+      }
+     
       
    
     },

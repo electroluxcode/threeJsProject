@@ -335,4 +335,7 @@ export default {
 };
 </script>
 
-<style src="../assets/css/page/app.css"></style>
+<style src="../assets/css/page/app.css" scope>
+
+
+</style>
