@@ -1,5 +1,13 @@
 # threejs版本的控制系统（效果可以看readme文件）
 
+
+
+## demo ver0.31 接入了监控系统，可以点击下面的select进行监控视角的切换。
+
+新增后端 behind/ffmpeg后端转flv.rar 由于rmtp协议不能在web端直接进行呈现。因此在该后端在2000会暴露一个视频转接的url
+
+<img src="./readme/monitor.png" style="width:100%"/>
+
 ## demo ver0.3 新加了数据可视化大屏
 路径：data
 <img src="./readme/data.png" style="width:100%"/>

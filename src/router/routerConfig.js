@@ -1,5 +1,10 @@
 const routes = [
   {
+    path: "data2",
+    name: "MainPage2",
+    component: () => import("../views/dataBig_2.vue"),
+  },
+  {
     path: "data1",
     name: "MainPage1",
     component: () => import("../views/dataBig_1.vue"),
@@ -82,6 +87,11 @@ const routes = [
     path: "chat",
     name: "chat",
     component: () => import("../views/PersonChatAll.vue"),
+  },
+  {
+    path: "video",
+    name: "video",
+    component: () => import("../views/video.vue"),
   }
 ];
 export default routes;

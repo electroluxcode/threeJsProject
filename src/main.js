@@ -18,7 +18,8 @@ import BinAdmin from './plugin'
 import './assets/styles/index.styl'
 import ECharts from 'vue-echarts/components/ECharts'
 
-
+//引入视频流 npm install --save flv.js
+import flvjs from 'flv.js';
 
 
 Vue.use(BinAdmin)
@@ -35,6 +36,7 @@ let mainVue = new Vue({
   i18n,
   router,
   store,
+  flvjs,
   render: function (h) {
     return h(App);
   },
