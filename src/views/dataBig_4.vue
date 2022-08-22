@@ -13,7 +13,7 @@
       <Panel>
         <template slot="inner">
           <div flex="main:justify dir:top" style="height: 100%">
-            <Card>
+            <!-- <Card>
               <template slot="title">
                 <span>本月数据分析</span>
               </template>
@@ -45,36 +45,36 @@
                   </span>
                 </div>
               </template>
-            </Card>
+            </Card> -->
             <Card>
               <template slot="title">
-                <span>资源信息分类1111</span>
+                <span>车库信息</span>
               </template>
               <template slot="content">
                 <div flex="main:justify">
                   <span class="count-wrapper-item" flex="main:justify dir:top">
-                    <i class="font">一级分类</i>
+                    <i class="font">能耗度</i>
                     <p>
                       <i class="num">{{ classify.lv1 }}</i
-                      ><i class="white-font">（条）</i>
+                      ><i class="white-font">（度）</i>
                     </p>
                   </span>
                   <span class="count-wrapper-item" flex="main:justify dir:top">
-                    <i class="font">二级分类</i>
+                    <i class="font">电梯楼层</i>
                     <p>
                       <i class="num">{{ classify.lv2 }}</i
-                      ><i class="white-font">（条）</i>
+                      ><i class="white-font">（层）</i>
                     </p>
                   </span>
                   <span class="count-wrapper-item" flex="main:justify dir:top">
-                    <i class="font">资源数</i>
+                    <i class="font">AGV</i>
                     <p>
                       <i class="num">{{ classify.resourceCount }}</i
-                      ><i class="white-font">（条）</i>
+                      ><i class="white-font">（个）</i>
                     </p>
                   </span>
                   <span class="count-wrapper-item" flex="main:justify dir:top">
-                    <i class="font">部门数</i>
+                    <i class="font">月卡人数</i>
                     <p>
                       <i class="num">{{ classify.deptCount }}</i
                       ><i class="white-font">（个）</i>
@@ -90,61 +90,12 @@
                 </div>
               </template>
             </Card>
-            <Card>
-              <template slot="title">
-                <div flex="main:justify">
-                  <span>资源信息分类统计</span>
-                  <span class="handle-date" flex="main:justify">
-                    <i
-                      class="tab"
-                      :class="dateTab === 0 ? 'active' : ''"
-                      @click="dateTab = 0"
-                      >本月</i
-                    >
-                    <i
-                      class="tab"
-                      :class="dateTab === 1 ? 'active' : ''"
-                      @click="dateTab = 1"
-                      >本年</i
-                    >
-                    <b-date-picker
-                      placement="bottom-end"
-                      :open="open"
-                      :value="date"
-                      confirm
-                      @on-change="handleChange"
-                      @on-clear="handleClear"
-                      @on-ok="handleOk"
-                    >
-                      <a href="javascript:void(0)" @click="handleClick">
-                        <template v-if="date === ''">请选择日期</template>
-                        <template v-else>{{ date }}</template>
-                      </a>
-                      <a href="javascript:void(0)" @click="consoleMessage()">
-                        <template v-if="date === ''">请选择日期</template>
-                        <template v-else>{{ date }}</template>
-                      </a>
-                    </b-date-picker>
-                  </span>
-                </div>
-              </template>
-              <template slot="content">
-                <div class="table">
-                  <div class="table-row" flex="main:justify">
-                    <span>部门名称</span>
-                    <span>归集数量（条）</span>
-                    <span>占比</span>
-                  </div>
-                  <div
-                    class="table-row"
-                    v-for="(item, index) in classifyList"
-                    :key="index"
-                    flex="main:justify"
-                  >
-                    <span>{{ item.name }}</span>
-                    <span>{{ item.count }}</span>
-                    <span>{{ item.percent }}%</span>
-                  </div>
+            <Card >
+           
+              <template slot="content" >
+                <div class="table" >
+                  <chart ref="chart2" :options="returnTrend(timeCar)" style="width: 100%; height: 320px"></chart> 
+                  <!-- <chart ref="chart2" :options="returnTrend(timeCar)" style="position:absolute;width: 100%; height: 520px;top:500px"></chart> -->
                 </div>
               </template>
             </Card>
@@ -203,11 +154,16 @@
             <div class="outer-wrapper">
               <!-- <div class="picture" style="width:200px;height:300px"></div> -->
               <div class="picture">
-                <canvas id="canvas" style="height: 400px;margin-top:30px"></canvas>
+                <canvas id="canvas" style="height: 400px; margin-top: 30px"></canvas>
               </div>
 
-              <div style="margin-left:70px" class="bottomBtn">
-                <el-select v-model="value" placeholder="请选择" class="select" style="line-height:80px">
+              <div style="margin-left: 70px" class="bottomBtn">
+                <el-select
+                  v-model="value"
+                  placeholder="请选择"
+                  class="select"
+                  style="line-height: 80px"
+                >
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -216,7 +172,12 @@
                   >
                   </el-option>
                 </el-select>
-                <el-button type="primary" @click="switchMonitor()" style="margin:10px;margin-left:110px">点击切换监控</el-button>
+                <el-button
+                  type="primary"
+                  @click="switchMonitor()"
+                  style="margin: 10px; margin-left: 110px"
+                  >点击切换监控</el-button
+                >
               </div>
               <div class="mask-cir-container">
                 <div class="mask-inner">
@@ -233,18 +194,18 @@
           <div flex="main:justify dir:top" style="height: 100%">
             <Card>
               <template slot="title">
-                <span>车库来源对比</span>
+                <span>各楼层车位</span>
               </template>
               <template slot="content">
                 <chart
-                  ref="chart3"
-                  :options="returnRose(sourceData)"
-                  style="width: 100%; height: 280px"
+                  ref="chart1"
+                  :options="returnComplexBar(floor.chartData)"
+                  style="width: 100%; height: 220px"
                 ></chart>
               </template>
             </Card>
             <Card>
-              <template slot="title">
+              <template slot="title" style="z-index: 99">
                 <div flex="main:justify">
                   <span>{{ chartTab === 0 ? "车库" : "法人" }}数据分类统计</span>
                   <span class="handle-date" flex="main:justify">
@@ -298,26 +259,26 @@
             <Card style="height: 290px">
               <template slot="title">
                 <div flex="main:justify">
-                  <span>车库告警信息</span>
+                  <span>车库告警记录</span>
                   <span class="handle-date" flex="main:justify"> </span>
                 </div>
               </template>
-              <template slot="content">
+              <template slot="content" class="list">
                 <div
                   class="execute-status"
                   @mouseenter="on_swiper_enter"
                   @mouseleave="on_swiper_leave"
                 >
-                  <div class="table">
+                  <div class="table collist">
                     <div
                       class="row"
-                      style="background-color: #001739"
+                      style="background-color: #001739; z-index: 999"
                       flex="space:around"
                     >
-                      <div class="col">被拦截人</div>
-                      <div class="col">应用事项</div>
-                      <div class="col">执行部门</div>
-                      <div class="col">执行时间</div>
+                      <div class="col">责任人</div>
+                      <div class="col">故障描述</div>
+                      <div class="col">状态</div>
+                      <div class="col">故障时间</div>
                     </div>
                   </div>
                   <div class="table" style="height: 200px">
@@ -349,6 +310,7 @@
 import echarts from "echarts";
 import Panel from "@/components/Panel/Panel";
 import Card from "@/components/Card/Card";
+import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 
 // 统一变量
 const xyLineColor = "#535e83";
@@ -357,6 +319,17 @@ export default {
   name: "SummaryMap",
   data() {
     return {
+      // 车库告警记录轮播设置
+      swiperOptions: {
+        direction: "vertical",
+        slidesPerView: 6,
+        loop: false,
+        autoplay: {
+          delay: 3000,
+          stopOnLastSlide: true,
+          disableOnInteraction: true,
+        },
+      },
       options: [
         {
           value: "0",
@@ -374,69 +347,68 @@ export default {
           value: "3",
           label: "C2",
         },
-        
       ],
       value: "",
-    
+      //车库告警记录信息
       punishRewardList: [
         {
-          name: "周树人",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周星星",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周迅",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周一围",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周海媚",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周树人",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周星星",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周迅",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周一围",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
         {
-          name: "周海媚",
-          info: "产权交易",
-          dept: "广电总局",
+          name: "123456",
+          info: "D2安全门",
+          dept: "未处理",
           time: "2020-06-02",
         },
       ],
@@ -451,16 +423,27 @@ export default {
         submit: 0,
         reflux: 0,
       },
-      //对应页面上资源信息统计那一栏，左边条形图
+      //对应页面上资源信息统计那一栏，左边条形图，车库信息
       classify: {
-        lv1: 2,
+        lv1: 12,
         lv2: 6,
         resourceCount: 2,
         deptCount: 2,
         chartData: [
           ["product", "电量"],
+
           ["一号AGV", 30],
           ["二号AGV", 100],
+        ],
+      },
+      //各楼层车位数据
+      floor: {
+        chartData: [
+          ["product", "占用"],
+
+          ["一楼", 30],
+          ["二楼", 50],
+           ["三楼", 50],
         ],
       },
       // 左边下面资源信息统计图
@@ -561,19 +544,31 @@ export default {
           percent: 10,
         },
       ],
-      monitor:[
+      monitor: [
         "ws://localhost:2000/api/stream",
         "ws://localhost:2000/api/stream1",
         "ws://localhost:2000/api/stream2",
         "ws://localhost:2000/api/stream3",
       ],
-      monitorController:null
+      monitorController: null,
+      //各个时间段
+      timeCar: [
+        ["product", "取车", "存车"],
+        ["0:00", 1000, 500],
+        ["4:00", 1400, 600],
+        ["8:00", 2000, 700],
+        ["12:00", 1500, 500],
+        ["16:00", 1200, 400],
+        ["20:00", 1300, 500],
+        ["24:00", 1400, 600],
+       
+      ],
     };
   },
   mounted() {
     // 加载摄像头
 
-    this.monitorController=new JSMpeg.Player(this.monitor[1], {
+    this.monitorController = new JSMpeg.Player(this.monitor[1], {
       canvas: document.getElementById("canvas"),
     });
     // this.renderBall()
@@ -592,17 +587,17 @@ export default {
   components: {
     Panel,
     Card,
+
+    Swiper,
+    SwiperSlide,
   },
   methods: {
-    switchMonitor(){
-      this.monitorController.stop()
-      this.monitorController=new JSMpeg.Player(this.monitor[this.value], {
-  
-      canvas: document.getElementById("canvas"),
+    switchMonitor() {
+      this.monitorController.stop();
+      this.monitorController = new JSMpeg.Player(this.monitor[this.value], {
+        canvas: document.getElementById("canvas"),
       });
-    
     },
-
 
     mySwiper() {
       // mySwiper 是要绑定到标签中的ref属性
@@ -702,20 +697,32 @@ export default {
       init();
       window.onresize = init;
     },
+    //车库信息
     returnBar(data) {
+      const seriesLabel = {};
       return {
+        // title: {
+        //   text: 'Weather Statistics'  //这个有点丑陋，不建议加上去
+        // },
         color: "#00abfb",
         tooltip: {
+          //触发类型
+          //当trigger为’item’时只会显示该点（散点图）的数据，为’axis’时显示该列下所有坐标轴所对应的数据。
           trigger: "axis",
           axisPointer: {
+            //触发数据的范围
             type: "shadow",
           },
         },
+        //没鸟用
+
+        //显示的地方
         grid: {
           left: "3%",
           right: "12%",
           bottom: "6%",
           top: "3%",
+          //是否显示坐标轴
           containLabel: true,
         },
         dataset: {
@@ -723,6 +730,7 @@ export default {
         },
         xAxis: {
           type: "value",
+          //显示比例 0，100就会贼小
           boundaryGap: [0, 0.01],
           axisLine: {
             lineStyle: {
@@ -730,20 +738,46 @@ export default {
             },
           },
           splitLine: { lineStyle: { color: splitLineColor } },
-          name: "(条)",
+          name: "(百分比)",
         },
         yAxis: {
           type: "category",
+
           axisLine: {
             lineStyle: {
               color: xyLineColor,
             },
           },
         },
+
         series: [
           {
+            //是否显示数字
+            // label:{show:true},
             type: "bar",
             showBackground: true,
+            barWidth: 10,
+            itemStyle: {
+              barBorderRadius: 8,
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: "#2380f2" },
+                { offset: 1, color: "#39BBF3" },
+              ]),
+            },
+          },
+          //是否显示label
+          {
+            label: {
+              show: false,
+              fontSize: 0,
+            },
+            type: "bar",
+            name: "健康度",
+            data: [
+              { value: 39, label: { show: false }, labelLine: { show: false } },
+              { value: 20, label: { show: true }, labelLine: { show: true } },
+            ],
+
             barWidth: 10,
             itemStyle: {
               barBorderRadius: 8,
@@ -756,21 +790,218 @@ export default {
         ],
       };
     },
-    returnRose(data) {
+    //各个时段停车段
+    returnTrend(data) {
       return {
-        color: ["#fbd860", "#35afc6", "#1f74f1", "#00cbfe"],
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b} : {c} ({d}%)",
+        dataset: {
+          source: data,
         },
+        color: ["#02b7f4", "#2646c5"],
+        title: {
+          text: "各个时间段停车",
+          textStyle: { color: "#fff" },
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            label: {
+              backgroundColor: "#6a7985",
+            },
+          },
+        },
+        grid: {
+          left: "3%",
+          right: "10%",
+          bottom: "10%",
+          containLabel: true,
+        },
+        legend: {
+          textStyle: { color: "#fff" },
+          bottom: 0,
+        },
+        xAxis: [
+          {
+            axisLine: { lineStyle: { color: xyLineColor } },
+            type: "category",
+            //这玩意会偏移位置
+            // boundaryGap: false,
+          },
+        ],
+        yAxis: [
+          {
+            position: "left",
+            boundaryGap: [0.2, 0.2],
+            splitLine: { lineStyle: { color: splitLineColor } },
+            axisLine: { lineStyle: { color: xyLineColor } },
+            type: "value",
+            name: "(条)",
+            interval: 500,
+            max: 2500,
+          },
+          {
+            position: "right",
+            boundaryGap: [0.2, 0.2],
+            splitLine: { lineStyle: { color: splitLineColor } },
+            axisLine: { lineStyle: { color: xyLineColor } },
+            type: "value",
+            name: "(条)",
+            interval: 500,
+            max: 2500,
+          },
+        ],
         series: [
           {
-            name: "面积模式",
-            type: "pie",
-            radius: [30, 100],
-            center: ["50%", "50%"],
-            roseType: "area",
-            data: data,
+            smooth: true,
+            name: "停车",
+            type: "bar",
+            areaStyle: {},
+            yAxisIndex: 1,
+            barWidth: 8,
+            stack: 'Ad',
+            itemStyle: {
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 0, 1,
+                  [
+                    { offset: 0, color: '#294bd5' },
+                    { offset: 1, color: '#294bd533' }
+                  ]
+                )
+              }
+          },
+          {
+            smooth: true,
+            name: "取车",
+            barWidth: 10,
+            type: "bar",
+            stack: 'Ad',
+            areaStyle: {},
+            itemStyle: {
+                color: new echarts.graphic.LinearGradient(
+                  0, 0, 0, 1,
+                  [
+                    { offset: 0, color: '#00befc' },
+                    { offset: 1, color: '#00befc33' }
+                  ]
+                )
+              }
+          },
+        ],
+      };
+    },
+    //各楼层车位堆叠图
+    //数据传入两个，第一个是占用车位floor，然后是空车位series的数据
+    returnComplexBar(data) {
+      const seriesLabel = {};
+      return {
+        // title: {
+        //   text: 'Weather Statistics'  //这个有点丑陋，不建议加上去
+        // },
+        color: "#00abfb",
+        tooltip: {
+          //触发类型
+          //当trigger为’item’时只会显示该点（散点图）的数据，为’axis’时显示该列下所有坐标轴所对应的数据。
+          trigger: "axis",
+          axisPointer: {
+            //触发数据的范围
+            type: "shadow",
+          },
+        },
+        //显示的地方
+        grid: {
+          left: "3%",
+          right: "12%",
+          bottom: "6%",
+          top: "3%",
+          //是否显示坐标轴
+          containLabel: true,
+        },
+        dataset: {
+          source: data,
+        },
+        xAxis: {
+          type: "value",
+          //显示比例 0，100就会贼小
+          boundaryGap: [0, 0.01],
+          axisLine: {
+            lineStyle: {
+              color: xyLineColor,
+            },
+          },
+          splitLine: { lineStyle: { color: splitLineColor } },
+          name: "(百分比)",
+        },
+        yAxis: {
+          type: "category",
+
+          axisLine: {
+            lineStyle: {
+              color: xyLineColor,
+            },
+          },
+        },
+
+        series: [
+          {
+            stack: "Search Engine",
+            //是否显示数字
+            label: { show: true },
+            type: "bar",
+            showBackground: true,
+            barWidth: 10,
+            itemStyle: {
+              barBorderRadius: 8,
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: "red" },
+                { offset: 1, color: "#39BBF3" },
+              ]),
+            },
+          },
+          //是否显示label
+          {
+            label: {
+              show: false,
+              fontSize: 0,
+            },
+            stack: "Search Engine",
+            type: "bar",
+            name: "空车位",
+            data: [
+              { value: 70, label: { show: false }, labelLine: { show: false } },
+              { value: 50, label: { show: true }, labelLine: { show: true } },
+              { value: 50, label: { show: true }, labelLine: { show: true } },
+            ],
+
+            barWidth: 10,
+            itemStyle: {
+              barBorderRadius: 8,
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: "#2380f2" },
+                { offset: 1, color: "#39BBF3" },
+              ]),
+            },
+          },{
+            label: {
+              show: false,
+              fontSize: 0,
+            },
+            stack: "Search Engine",
+            type: "bar",
+            name: "空车位",
+            data: [
+              { value: 70, label: { show: false }, labelLine: { show: false } },
+              { value: 50, label: { show: true }, labelLine: { show: true } },
+              { value: 50, label: { show: true }, labelLine: { show: true } },
+            ],
+
+            barWidth: 10,
+            itemStyle: {
+              barBorderRadius: 8,
+              color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                { offset: 0, color: "green" },
+                { offset: 1, color: "#39BBF3" },
+              ]),
+            },
           },
         ],
       };
@@ -1543,11 +1774,11 @@ $bdh = 2px
             background-color: #001739
 
           .col
-            width: 24%
+            width: 26%
             color #fff
             line-height: 40px
 </style>
-<style>
+<style scope>
 .page-title-wrapper {
   margin-top: -1%;
   transform: scale(0.7, 0.7);
@@ -1566,4 +1797,9 @@ $bdh = 2px
 .rotate-cir-1 {
   bottom: 40%;
 }
+.list {
+}
+</style>
+<style scoped>
+@import "./swiper/css/swiper.css";
 </style>

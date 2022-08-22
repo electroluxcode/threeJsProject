@@ -1,5 +1,15 @@
 const routes = [
   {
+    path: "data4",
+    name: "MainPage4",
+    component: () => import("../views/dataBig_4.vue"),
+  },
+  {
+    path: "data3",
+    name: "MainPage3",
+    component: () => import("../views/dataBig_3.vue"),
+  },
+  {
     path: "data2",
     name: "MainPage2",
     component: () => import("../views/dataBig_2.vue"),
@@ -83,11 +93,11 @@ const routes = [
     name: "buildingdetail",
     component: () => import("../views/BuildingDetail.vue"),
   },
-  {
-    path: "chat",
-    name: "chat",
-    component: () => import("../views/PersonChatAll.vue"),
-  },
+  // {
+  //   path: "chat",
+  //   name: "chat",
+  //   component: () => import("../views/PersonChatAll.vue"),
+  // },
   {
     path: "video",
     name: "video",

@@ -10,9 +10,9 @@
     export default {
         name:"video_",
         mounted(){
-                    new JSMpeg.Player('ws://localhost:2000/api/stream2', {
-                        canvas: document.getElementById('canvas')
-                    })
+            new JSMpeg.Player('ws://localhost:2000/api/stream2', {
+                canvas: document.getElementById('canvas')
+            })
         
             
         }
