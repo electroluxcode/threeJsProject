@@ -1,5 +1,10 @@
 const routes = [
   {
+    path: "data5",
+    name: "MainPage5",
+    component: () => import("../views/dataBig_5.vue"),
+  },
+  {
     path: "data4",
     name: "MainPage4",
     component: () => import("../views/dataBig_4.vue"),

@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "@types/three": "^0.135.0",
     "axios": "^0.26.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",

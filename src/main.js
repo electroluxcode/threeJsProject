@@ -26,7 +26,10 @@ Vue.use(BinAdmin)
 // Vue.component(Subarea)
 Vue.component('chart', ECharts)
 
-
+//配置高德地图安全密钥
+window._AMapSecurityConfig = {
+	securityJsCode: 'shiboMap' //*  安全密钥
+}
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
