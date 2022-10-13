@@ -6,12 +6,12 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     proxy: {
-      "/apicity": {
+      "/api": {
         target: "http://localhost:3000",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          "^/apicity": "",
+          "^/api": "",
         },
       },
     },

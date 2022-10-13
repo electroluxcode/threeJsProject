@@ -295,13 +295,13 @@ export default {
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
             this.css2dRender.setSize(this.container.clientWidth, this.container.clientHeight);
-      },12000)
+      },120)
       if (document.body.clientWidth < 800) {
         this.camera.position.set(1000, 2000, 3500); 
         document.querySelector(".sidebarThree").style.cssText ="margin-left:-160px";
         setTimeout(() => {
          document.querySelector('.allow-touch-styles').style.cssText="display:none !important"      
-        }, 2500);
+        }, 250);
       }else{
       }
       

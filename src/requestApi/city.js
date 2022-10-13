@@ -1,6 +1,6 @@
 import Fetch from "../utils/Fetch";
 
-let tag1 = "/apicity";
+let tag1 = "/api";
 
 export const citylist = () => {
   return Fetch({

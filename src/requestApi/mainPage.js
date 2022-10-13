@@ -1,6 +1,6 @@
 import Fetch from "../utils/Fetch";
 const qs = require("qs");
-let tag = "/apicity";
+let tag = "/api";
 
 export const userInfo = (data) => {
   return Fetch({
