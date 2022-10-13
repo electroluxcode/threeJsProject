@@ -1,8 +1,45 @@
-# threejs版本的控制系统（效果可以看readme文件）
+# threejs版本的控制系统（前后端demo开源/效果可以看readme文件）
+
+
+# demo ver1.0 
+
+整理出了demo版本，不涉及公司的真实数据和核心算法逻辑。数据都是我随便生成的。
+
+然后去除正式项目中的权限逻辑，自动生成地图逻辑，和自动生成定位点/入库点逻辑。更改复用逻辑。
+
+添加后端demo（聊天示例，rmtp示例，table示例）
+
+前端使用说明：
+
+```
+
+npm install 之后 
+npm run serve
+http://localhost:8080/#/apartmentArea
+
+
+```
+
+后端使用说明：
+
+```
+
+1. cd 进去behind
+2. chat文件夹是聊天demo，ffmpeg文件夹是rmtp的demo，最后 table文件夹 是3d交互的逻辑demo和生成demo的demo。
+3. 只有table文件夹有数据库
+
+```
+
+
+## demo ver0.33 
+
+调用高德api在数据大屏界面增加查看当前区域拥堵情况
+/data5
 
 ## demo ver0.32 
+
 监控调参，不再有花屏的现象了。
-根据杨经理对数据大屏的理解进行了改动。路径
+对数据大屏的理解进行了改动。路径
 /data2  /data3  /data4
 
 ## demo ver0.31 接入了监控系统，可以点击下面的select进行监控视角的切换。
@@ -12,9 +49,12 @@
 <img src="./readme/monitor.png" style="width:100%"/>
 
 ## demo ver0.3 新加了数据可视化大屏
+
 路径：data
 <img src="./readme/data.png" style="width:100%"/>
+
 ## demo ver0.2
+
 新加上了移动端适配
 
 <img src="./readme/移动端1.png" style="width:25%"/>
@@ -119,6 +159,7 @@
 
 
 ## 功能5：实现聊天功能
+
 <br/>
 这部分我使用express合socket简单写了一个后端，做这个的原因是可以让登录该系统的管理员进行一个简单的沟通
 
